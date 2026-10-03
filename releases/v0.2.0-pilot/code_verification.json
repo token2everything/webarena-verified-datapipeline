@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-10-03T13:53:58.691440+00:00",
+  "pipeline_pytest": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 uv run --no-sync pytest devs/data/webarena_verified_generated/tests -p no:cacheprovider -n 0",
+    "default_environment": {
+      "passed": 109,
+      "failed": 0,
+      "duration_seconds": 121.87,
+      "log": "infra/continuation/pipeline_default_final_action_contract.log",
+      "AR_null_patch_present": false
+    },
+    "isolated_evaluator_environment": {
+      "passed": 109,
+      "failed": 0,
+      "duration_seconds": 121.45,
+      "log": "infra/continuation/pipeline_isolated_final_action_contract.log",
+      "PYTHONPATH": "/root/cua-lite/.data/webarena_verified_generated/wav-v02-pilot30-20261003-codex1/evaluator_build_final",
+      "AR_null_patch_present": true
+    },
+    "default_environment_policy": "Unpatched AR null normalization is explicitly quarantined; final replay uses isolated patched evaluator."
+  },
+  "browsergym_wait_action_tests": {
+    "passed": 69,
+    "failed": 0,
+    "duration_seconds": 3.81,
+    "log": "infra/continuation/browsergym_actions_root.log",
+    "temporary_dependencies": "/tmp/wav-v02-browsergym-test-deps",
+    "scope": "Before press_enter fix; retained wait checkpoint"
+  },
+  "source_sha256": {
+    "devs/data/webarena_verified_generated/generated_env.py": "4b273dc336ea6ecba0bc53e9b39e353bff27cf5b27f0632d12b793f90e6a89bf",
+    "devs/data/webarena_verified_generated/replay.py": "7f7ef545adfa21f8123e362fe0dd305a5848e071279bfdb537b4f1f0de692622",
+    "devs/data/webarena_verified_generated/tests/test_reference.py": "cf322a3f07f92fa7e81397bb5e4991570d5b4a76426bea5c0c26c5cb78470767",
+    "devs/data/webarena_verified_generated/tests/test_replay.py": "9ab71ee8be3b22a7e0b4af7d7dc6403fd73933a5584825779a5ded990f095b84",
+    "lite/gym/envs/browsergym/main.py": "75fef7a502061d32d353305c93e0252b5b4569f94b3805c5201c107b88a1d147",
+    "tests/gym/envs/browsergym/test_browsergym_actions.py": "e7b968d2fa25739d24d139e7daa1171ddbd0695fc985e3741ccae950ccb898d7"
+  },
+  "broader_browsergym_tests": {
+    "passed": 308,
+    "skipped": 9,
+    "deselected": 1,
+    "failed": 11,
+    "failure_reason": "Missing optional webarena/visualwebarena packages; not a clean full-suite pass.",
+    "duration_seconds": 39.92,
+    "log": "infra/continuation/browsergym_wait_type_broad.log"
+  },
+  "ruff": {
+    "status": "pass",
+    "scope": "Changed pipeline owners and tests",
+    "browsergym_main_full_file": "10 pre-existing E501/UP024 findings outside wait change; retained without unrelated edits."
+  },
+  "browsergym_action_contract_tests": {
+    "passed": 76,
+    "failed": 0,
+    "duration_seconds": 3.89,
+    "log": "infra/continuation/browsergym_action_contract_root_final.log",
+    "scope": "wait timing and type press_enter execution, errors, frames, result call ids and accounting"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "snapshot_version": "v0.2.0-pilot",
+  "created_at": "2026-10-03T14:54:25.634295+00:00",
+  "source_workspace": "/root/cua-lite",
+  "pipeline_source_files": [
+    {
+      "source": "devs/data/webarena_verified_generated/AGENTS.md",
+      "repository": "devs/data/webarena_verified_generated/AGENTS.md",
+      "sha256": "f78e11200606358637b1208fba8cf32b876a4d3798a17a03e04a1c7c9342fdf4"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/author.py",
+      "repository": "devs/data/webarena_verified_generated/author.py",
+      "sha256": "0184f9299d3ecbaa63a6d5575799df37da2e0754994383b65ed3e726c10e7aa8"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/collect_reference.py",
+      "repository": "devs/data/webarena_verified_generated/collect_reference.py",
+      "sha256": "d0de8f8cd352c1b8ce75049b2a11bacc4f32cad542233e6b269cdc349330cba6"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/contract.py",
+      "repository": "devs/data/webarena_verified_generated/contract.py",
+      "sha256": "848874625207c470bd4b7b525eb0b2b75ffb2f156f285a84b844ba3dd30a637e"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/generated_env.py",
+      "repository": "devs/data/webarena_verified_generated/generated_env.py",
+      "sha256": "4b273dc336ea6ecba0bc53e9b39e353bff27cf5b27f0632d12b793f90e6a89bf"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/patches/agent_response_null.patch",
+      "repository": "devs/data/webarena_verified_generated/patches/agent_response_null.patch",
+      "sha256": "0dfbb5fc2beb5f8cb39d9b1680ad6fd9ecd2618f6ef4934568ec02b7cdaa4b4b"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/prepare_evaluator.py",
+      "repository": "devs/data/webarena_verified_generated/prepare_evaluator.py",
+      "sha256": "3eca2d4792333ccb46b7f372f9528a8eabed0592262c84a1f96ea05ccd8de045"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/quality_check.py",
+      "repository": "devs/data/webarena_verified_generated/quality_check.py",
+      "sha256": "a9a7d823ab414838d58cb722a961fdc0f215ba60253f684e77a4ecf4351be4a4"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/replay.py",
+      "repository": "devs/data/webarena_verified_generated/replay.py",
+      "sha256": "7f7ef545adfa21f8123e362fe0dd305a5848e071279bfdb537b4f1f0de692622"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/run_reference.py",
+      "repository": "devs/data/webarena_verified_generated/run_reference.py",
+      "sha256": "202a28f13705a5ccf5d503d6484754300a9eb68330429959d61051dffe734f57"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_evaluator_build.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_evaluator_build.py",
+      "sha256": "40a05db3bfbdbcf158d940de9384630ce87271acf29e61a46ea6c04481286b04"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_generated_contract.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_generated_contract.py",
+      "sha256": "216c74ef057ba446b327a716a7b528f29f5dfa760868d77f53cff4b83a4f188b"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_quality_check.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_quality_check.py",
+      "sha256": "fd35d6c12dfd951a1e3d2e748e5ceee4aae266d8f4347f8582ebb8ec2cc399c9"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_reference.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_reference.py",
+      "sha256": "cf322a3f07f92fa7e81397bb5e4991570d5b4a76426bea5c0c26c5cb78470767"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_replay.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_replay.py",
+      "sha256": "9ab71ee8be3b22a7e0b4af7d7dc6403fd73933a5584825779a5ded990f095b84"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/tests/test_semantic_author.py",
+      "repository": "devs/data/webarena_verified_generated/tests/test_semantic_author.py",
+      "sha256": "53082dee3645c8739b30638fa389abf9a34bd674d234f5e005496bb3ac13c879"
+    },
+    {
+      "source": "devs/data/webarena_verified_generated/validate.py",
+      "repository": "devs/data/webarena_verified_generated/validate.py",
+      "sha256": "2e60882dacd80810649acd52834fc195855153d35376d5d875e7b3f4899f3b63"
+    },
+    {
+      "source": ".data/webarena_verified_generated/wav-v02-pilot30-20261003-codex1/reports/code_verification.json",
+      "repository": "releases/v0.2.0-pilot/code_verification.json",
+      "sha256": "7011c0c3cb445d772f86d3ce404ea8ece7b3754a2cb05cff633125c4262b4f8d"
+    },
+    {
+      "source": ".data/webarena_verified_generated/wav-v02-pilot30-20261003-codex1/reports/construction_progress.json",
+      "repository": "releases/v0.2.0-pilot/construction_progress.json",
+      "sha256": "0dc2ba06f9ba8c5a1bf0e41e616964d4f1348710691845818a0a66eeffbd9ff7"
+    },
+    {
+      "source": ".data/webarena_verified_generated/wav-v02-pilot30-20261003-codex1/reports/reference_failure_audit.json",
+      "repository": "releases/v0.2.0-pilot/reference_failure_audit.json",
+      "sha256": "d630dc45c548de94641d92f493dd89196e4df73c052d92da25fa317dc3d42ae4"
+    },
+    {
+      "source": ".data/webarena_verified_generated/wav-v02-pilot30-20261003-codex1/reports/reference_score_matrix.csv",
+      "repository": "releases/v0.2.0-pilot/reference_score_matrix.csv",
+      "sha256": "3b859aa318c7e8b2e5ea9b3fdebf18b33627642cd65928be522bed67b41e5f9a"
+    }
+  ],
+  "cua_lite": {
+    "remote": "https://gitlab.pjlab.org.cn/chenjiabei/cua-lite",
+    "base_commit": "7125dc89c9b47e08afaedaa281c2f067e374c421",
+    "base_archive": "/mnt/shared-storage-user/songdemin/user/laibowen-p/webarena-verified/1.2.3/code/v0.2.0-pilot/cua-lite-base-7125dc89.tar.gz",
+    "base_archive_sha256": "dbbd59e36ee9e59a49b0133df4f142e35b98cb671f7ea042c3a3b88d4cd13372",
+    "base_archive_scope": [
+      "lite/",
+      "tests/",
+      "pyproject.toml",
+      "README.md"
+    ],
+    "runtime_patch": "integrations/cua-lite-v02.patch",
+    "runtime_patch_sha256": "276dc38bce28cf0488e46b395d693b526c6d108de7d2c69a68f7bfd62beb7265",
+    "runtime_files": [
+      {
+        "path": "lite/gym/envs/browsergym/main.py",
+        "sha256": "75fef7a502061d32d353305c93e0252b5b4569f94b3805c5201c107b88a1d147"
+      },
+      {
+        "path": "lite/gym/envs/browsergym/isolation.py",
+        "sha256": "6fc51a32196f92559fa0689051ca132a7443c1126552746dcca70c01c4f8eea7"
+      },
+      {
+        "path": "lite/gym/envs/browsergym/scripts/install.sh",
+        "sha256": "6bfe1fb2cffc2e0b45c2896ff2762b2b25eb45f7267f0a6f1d118c04c9cdc891"
+      },
+      {
+        "path": "lite/gym/envs/browsergym/README.md",
+        "sha256": "1a6de7412b1ac9e3f90fa504ac7a398a140eeea55fccccb875f437b99deb897e"
+      },
+      {
+        "path": "tests/gym/envs/browsergym/test_browsergym_actions.py",
+        "sha256": "e7b968d2fa25739d24d139e7daa1171ddbd0695fc985e3741ccae950ccb898d7"
+      },
+      {
+        "path": "tests/gym/envs/browsergym/test_browsergym_health.py",
+        "sha256": "72bf360285cfae64ffb7e3748bf3ac44ca5c5bc66974410e9b555c0246fc474d"
+      },
+      {
+        "path": "tests/gym/envs/browsergym/test_browsergym_isolation.py",
+        "sha256": "c9355ac6768451041544ca935ea0510b883f5a113d82275f9368488ea0b2768e"
+      },
+      {
+        "path": "tests/gym/envs/browsergym/test_browsergym_registration.py",
+        "sha256": "98597d71ef8422937c10a8685862e65cf221d5fd3c8637a16de6132894387559"
+      },
+      {
+        "path": "lite/gym/envs/browsergym/webarena_verified.py",
+        "sha256": "2b6fd32bbe439d045498a1984d02beb91fb36eb4a8dc55e5c64bf7a36de6034b"
+      },
+      {
+        "path": "tests/gym/envs/browsergym/test_webarena_verified_catalog.py",
+        "sha256": "706c59ae86eba4cd07f05c701c78cd334dd07fe86a59152652bf41f238b3536b"
+      }
+    ],
+    "patch_check": "pass",
+    "restored_runtime_sha256_matches_current_source": true
+  },
+  "dependencies": {
+    "python": "3.12",
+    "webarena_verified": "1.2.3",
+    "browsergym": "0.14.3",
+    "playwright": "1.44.0",
+    "webharbor_commit": "381dbd9882680806c81ed626d226f114c464a321",
+    "official_catalog_sha256_post_generation_only": "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30",
+    "requirements_policy": "Direct pins and observed package inventory; no claim of a resolved transitive lock or new live execution."
+  },
+  "data_index": "releases/v0.2.0-pilot/data-index.json",
+  "git_commit": null,
+  "git_tag": null,
+  "remote_repository": null,
+  "git_state": "Initialized on main; no files staged or committed. User creates the GitHub remote.",
+  "runtime_environment_index": "environment/reference-runtime-index.json",
+  "runtime_environment_index_sha256": "4f5c6468ffb9cb46ee0729d0c4225591386e60fc782033d555403bfeacfbbbda",
+  "snapshot_verification": "releases/v0.2.0-pilot/snapshot-verification.json"
+}

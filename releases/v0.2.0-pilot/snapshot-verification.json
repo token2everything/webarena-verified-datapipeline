@@ -1,0 +1,77 @@
+{
+  "recorded_at": "2026-10-03T15:05:46.032143+00:00",
+  "snapshot_version": "v0.2.0-pilot",
+  "checks": [
+    {
+      "kind": "default",
+      "passed": 109,
+      "failed": 0,
+      "summary": "================ 109 passed, 2888 warnings in 120.55s (0:02:00) ================",
+      "log": "releases/v0.2.0-pilot/verification-logs/default-tests.log",
+      "runtime": "/tmp/wav-v02-repository-runtime",
+      "uses_existing_host_dependencies": true
+    },
+    {
+      "kind": "isolated",
+      "passed": 109,
+      "failed": 0,
+      "summary": "================ 109 passed, 2888 warnings in 120.23s (0:02:00) ================",
+      "log": "releases/v0.2.0-pilot/verification-logs/isolated-tests.log",
+      "runtime": "/tmp/wav-v02-repository-runtime",
+      "uses_existing_host_dependencies": true
+    },
+    {
+      "kind": "runtime",
+      "passed": 76,
+      "failed": 0,
+      "summary": "============================== 76 passed in 4.33s ==============================",
+      "log": "releases/v0.2.0-pilot/verification-logs/runtime-tests.log",
+      "runtime": "/tmp/wav-v02-repository-runtime",
+      "uses_existing_host_dependencies": true
+    }
+  ],
+  "runtime_patch_fresh_base_check": "pass",
+  "runtime_restored_current_file_hashes": 10,
+  "original_source_and_report_file_hashes": 21,
+  "command_help_checks": {
+    "passed": 7,
+    "entrypoints": [
+      "author",
+      "collect_reference",
+      "prepare_evaluator",
+      "quality_check",
+      "replay",
+      "run_reference",
+      "validate"
+    ]
+  },
+  "pipeline_sources_included_by_gitignore": true,
+  "source_workspace_unchanged": true,
+  "new_live_reference_execution": false,
+  "dependency_lock": {
+    "status": "not_generated",
+    "attempts": 2,
+    "reasons": [
+      "Internal mirror timed out while fetching Playwright wheel",
+      "Configured additional internal index returned HTTP 502 for browsergym-core"
+    ],
+    "logs": [
+      "verification-logs/wav-v02-repository-lock.log",
+      "verification-logs/wav-v02-repository-lock-primary.log"
+    ]
+  },
+  "git": {
+    "branch": "main",
+    "files_staged": 0,
+    "commits": 0,
+    "tags": 0,
+    "remote": null
+  },
+  "ready_for": [
+    "source distribution",
+    "initial user commit and tag",
+    "GitHub remote connection",
+    "versioned continued development"
+  ],
+  "data_promotion": "human_review/canonical_stage/target_model_export pending; 0 training eligible"
+}

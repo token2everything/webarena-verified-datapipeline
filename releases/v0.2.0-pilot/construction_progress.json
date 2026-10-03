@@ -1,0 +1,3428 @@
+{
+  "artifact_kind": "construction_progress",
+  "recorded_at": "2026-10-03T14:05:26.958502+00:00",
+  "batch": "wav-v02-pilot30-20261003-codex1",
+  "current_milestone": "30-task construction continuation; actual independent outcomes retained; human acceptance pending",
+  "construction_requests_count": 30,
+  "constructed_candidates_count": 30,
+  "pending_grounding_count": 0,
+  "independent_reference_completed_count": 30,
+  "independent_reference_pass_count": 25,
+  "independent_reference_failure_count": 5,
+  "reference_failure_classification_counts": {
+    "evaluator_false_negative": 3,
+    "answer_precision_contract_ambiguity": 1,
+    "trace_completion_ordering": 1
+  },
+  "independent_reference_semantic_failure_count": 0,
+  "retained_historical_failure_attempt_count": 4,
+  "retained_infrastructure_failure_attempt_count": 3,
+  "retained_mixed_model_execution_failure_attempt_count": 1,
+  "semantic_failure_count_scope": "Current standard reference classifications only. The historical 0030 navigation error and execution defects remain separately recorded at their original zero scores.",
+  "infrastructure_attempts_report": "reports/reference_infrastructure_attempts.json",
+  "site_request_counts": {
+    "shopping_admin": 7,
+    "gitlab": 7,
+    "shopping": 6,
+    "reddit": 6,
+    "map": 2,
+    "wikipedia": 2
+  },
+  "task_type_request_counts": {
+    "RETRIEVE": 10,
+    "NAVIGATE": 10,
+    "MUTATE": 10
+  },
+  "abstract_family_count": 28,
+  "stage_counts": {
+    "contract": {
+      "pass": 30,
+      "pending": 0,
+      "quarantine": 0
+    },
+    "grounding_evidence": {
+      "pass": 30,
+      "pending": 0,
+      "quarantine": 0
+    },
+    "author_replay": {
+      "pass": 30,
+      "pending": 0,
+      "quarantine": 0
+    },
+    "contamination": {
+      "pass": 30,
+      "pending": 0,
+      "quarantine": 0
+    },
+    "independent_reference": {
+      "pass": 25,
+      "pending": 0,
+      "quarantine": 5
+    },
+    "human_review": {
+      "pass": 0,
+      "pending": 30,
+      "quarantine": 0
+    },
+    "canonical_stage": {
+      "pass": 0,
+      "pending": 30,
+      "quarantine": 0
+    },
+    "target_model_export": {
+      "pass": 0,
+      "pending": 30,
+      "quarantine": 0
+    }
+  },
+  "ready_for_stage_count": 0,
+  "training_eligible_count": 0,
+  "immutable_request_snapshot": "construction_requests.jsonl retains initial request statuses; this report owns current progress.",
+  "code_verification_report": "reports/code_verification.json",
+  "tasks": [
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0001",
+      "task_id": 2000101,
+      "intent_template_id": 2001025,
+      "site": "shopping_admin",
+      "task_type": "RETRIEVE",
+      "family_key": "shopping_admin.retrieve.orders_count",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In the default Orders view, report the total number of order records. Return the results as a list of numbers.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 8,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "73b5b2f986da3a7cad9c8fe94769af8e6288c4a9d2545eba4e5abf2953d92afc",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0001/reference_receipt.json",
+      "reference_receipt_file_sha256": "f10fcc9505dc6f83cd8cb8dabb08b618595a2188e8751cc43a25a2b62401c2bb",
+      "task_spec_sha256": "73285d995df2fdddc3af375f72fa4f6425cbf4a1d5f411dcaef546d05ee299db",
+      "retained_attempts": [
+        {
+          "generated_task_id": "wavgen-v02-pilot30-0001",
+          "attempt_id": "infra-01",
+          "classification": "infrastructure_failure",
+          "classification_reason": "deployment_root_marker_missing",
+          "raw_recorded_status": "error",
+          "included_in_semantic_success_rate": false,
+          "business_mutation": false,
+          "evidence_root": "reference_attempts/wavgen-v02-pilot30-0001/infra-01"
+        },
+        {
+          "generated_task_id": "wavgen-v02-pilot30-0001",
+          "attempt_id": "infra-02",
+          "classification": "infrastructure_failure",
+          "classification_reason": "environment_scored_initial_chat_greeting_before_response",
+          "raw_recorded_status": "fail",
+          "included_in_semantic_success_rate": false,
+          "business_mutation": false,
+          "evidence_root": "reference_attempts/wavgen-v02-pilot30-0001/infra-02"
+        }
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0002",
+      "task_id": 2000102,
+      "intent_template_id": 2001023,
+      "site": "shopping_admin",
+      "task_type": "NAVIGATE",
+      "family_key": "shopping_admin.navigate.orders_view",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open the default Orders list in the store administration site.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 10,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "terminal_navigation_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "69edb1e58e129f538bdecb0c45022943299ca76768368c678265d6b249064008",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0002/reference_receipt.json",
+      "reference_receipt_file_sha256": "030a49a8784dc34eb2e322550b2e48102fa0fb90f85b646fa8d55e4d917f89ec",
+      "task_spec_sha256": "65840ab654897491fa2a2dabdce8e35bfcc5b7463db5e8a64ea86ec3d35e8b7d",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0003",
+      "task_id": 2000103,
+      "intent_template_id": 2001020,
+      "site": "shopping_admin",
+      "task_type": "MUTATE",
+      "family_key": "shopping_admin.mutate.create_category",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 3,
+      "training_eligible": false,
+      "intent": "Create exactly 1 product category named V02 Pilot Category 01 under Default Category. Set its active status to True. Keep all existing category names unchanged, and leave the saved category's details open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 21,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "checked",
+          "passed": true
+        },
+        {
+          "kind": "text_set_preserved",
+          "passed": true
+        },
+        {
+          "kind": "ancestor_text",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_is_active_expected_vector": true,
+            "equivalent_post_data_e1_name_expected_vector": true,
+            "equivalent_post_data_e1_parent_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_is_active_expected_vector": true,
+            "negative_post_data_e1_name_expected_vector": true,
+            "negative_post_data_e1_parent_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "a98534b29474c9252440ae5182d8dd675a3a858db4149737d21ed770b2e53772",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0003/reference_receipt.json",
+      "reference_receipt_file_sha256": "16b0982747f3de3b9a5e34011fb5a6309247621d14506d1da9a9dc8ab120d56e",
+      "task_spec_sha256": "49fb2d6cff04d7198ee3819d647d99547fd00d60cb4589ecc072036f2c5ddeca",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0004",
+      "task_id": 2000104,
+      "intent_template_id": 2001024,
+      "site": "shopping_admin",
+      "task_type": "RETRIEVE",
+      "family_key": "shopping_admin.retrieve.customers_count",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In the default Customers view, report the total number of customer records. Return the results as a list of numbers.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 8,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "309aba13540f50bb46fd7d91579594e3731d2d6ebc42c1b2d3a7933b6398e85b",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0004/reference_receipt.json",
+      "reference_receipt_file_sha256": "59844a6bdea0f4429ac03d5b5c5b50f28fae190b4a94bc0d68c8387c3194a1b8",
+      "task_spec_sha256": "8e0fd8b0bd3833bc3155b17a817e32482019bb5918fb9496f151f013ff7433a1",
+      "retained_attempts": [
+        {
+          "generated_task_id": "wavgen-v02-pilot30-0004",
+          "attempt_id": "wait-not-executed-01",
+          "classification": "infrastructure_failure",
+          "classification_reason": "wait_action_seconds_not_executed",
+          "raw_recorded_status": "fail",
+          "included_in_semantic_success_rate": false,
+          "business_mutation": false,
+          "evidence_root": "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01",
+          "evidence": "Requested waits of 2/3/5/3 seconds executed in 0.217/0.261/0.483/0.283 seconds; loading placeholder 0 remained, eventual count70 supported immutableGT."
+        }
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0005",
+      "task_id": 2000105,
+      "intent_template_id": 2001006,
+      "site": "gitlab",
+      "task_type": "RETRIEVE",
+      "family_key": "gitlab.retrieve.project_metrics",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "For project Primer / design, report its project ID, star count, commit count and branch count. Return the results as a list of objects with fields branches (numbers), commits (numbers), project_id (numbers), stars (numbers).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 6,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "8d778e7b4604fdba889497bb2fbd7d60b2910f6f6fed649e81b0314f63067bc2",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0005/reference_receipt.json",
+      "reference_receipt_file_sha256": "6f2a5616dcf89367a26fee9cb88f7b9747d4d9b142d39ebdb6e8f7a63948db6e",
+      "task_spec_sha256": "dfa462f0319ac373b6194e7d8d23fe0531997de1233d0df3d7e2e970b006d8e7",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0006",
+      "task_id": 2000106,
+      "intent_template_id": 2001005,
+      "site": "gitlab",
+      "task_type": "RETRIEVE",
+      "family_key": "gitlab.retrieve.explore_first_project",
+      "status": "quarantined_reference_failure",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In Explore Projects ordered by Updated date, report the full name and description of the first project. Return the results as a list of objects with fields description (strings), full_name (strings).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 9,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "quarantine",
+          "reasons": [
+            "independent execution did not complete and pass",
+            "reference check did not pass: all_evaluators_pass",
+            "reference evaluator vector did not pass: har_results",
+            "reference evaluator vector did not pass: playwright_results"
+          ],
+          "receipt_sha256": "79e91581a2111e1199c8104858c28aa59302762c2e471aef5942ce17577cf359",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": "AR正确；公开Explore Projects+Updated date已满足，私评只接受/explore/projects路径，模型合法入口/explore?sort=latest_activity_desc被拒。",
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0006/reference_receipt.json",
+      "reference_receipt_file_sha256": "79cb8a4c8dc504705d1063cd055ddcfd35c3c3fec1f845f017aae9f74dc5487c",
+      "task_spec_sha256": "b3a029a9e799e2d1649490a9e7420a7d2e943be42af9d53071e47d958ca601ee",
+      "failure_classification": "evaluator_false_negative",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0007",
+      "task_id": 2000107,
+      "intent_template_id": 2001019,
+      "site": "shopping",
+      "task_type": "RETRIEVE",
+      "family_key": "shopping.retrieve.product_specs",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "For product IPASON Gaming Desktop AMD Athlon 3000G(2 Core 3.5GHz) Radeon Vega 3 240GB SSD 8GB 2666MHz 550W 80 Plus PSU Windows 10 Home Gaming PC (AMD 3000G 8G 240G SSD), report its listed price in USD and hard-drive specification. Leave its detail page open. Return the results as a list of objects with fields hard_drive (strings), price_usd (numbers).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 7,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "e4f24050e5b0a8ad5ad41d1dad023fca6ea2b4e74565edfdb2c2d1c9963f2840",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0007/reference_receipt.json",
+      "reference_receipt_file_sha256": "a11bfa7a85ca523155648dacc444167ced3a80233f6dfc24bb039c8ff6d2c6a2",
+      "task_spec_sha256": "64a244f349f549e233e5f80a25c6b2029209e1df40f6861f73c3f893cde34da8",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0008",
+      "task_id": 2000108,
+      "intent_template_id": 2001018,
+      "site": "shopping",
+      "task_type": "RETRIEVE",
+      "family_key": "shopping.retrieve.product_price_boolean",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "For product LED Wireless Mouse,Wireless Mouse for MacBook Air/Wireless Mouse for MacBook Pro/Mac/Laptop/MacBook/iPad,Bluetooth Mouse for MacBook Air/Pro/Mac/ipad/ipad pro (Rose Gold) with color Rose gold, report its listed price in USD and whether it is below 15 USD. Leave its detail page open. Return the results as a list of objects with fields below_threshold (booleans), price_usd (numbers).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 8,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "dd0b4328af70410ceb2fd4f266e2a75077dafb289aa0d39562c961a823857d8c",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0008/reference_receipt.json",
+      "reference_receipt_file_sha256": "d39907534d654fadf80b8fb91c159204f658fa13ed4d6e5bef482e4388422b18",
+      "task_spec_sha256": "293e377c0d6efd0ee7aadf46bf6c69b9957643bae787b562fbc83a9fad646c5c",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0009",
+      "task_id": 2000109,
+      "intent_template_id": 2001014,
+      "site": "reddit",
+      "task_type": "RETRIEVE",
+      "family_key": "reddit.retrieve.first_post_metrics",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In the default Hot view of forum science, report the first post submitter, comment count and score. Return the results as a list of objects with fields comments (numbers), score (numbers), submitter (strings).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 9,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "ae8a934151ba368b87d2e09606d65f3a2fb71064eaa9f3170ce627bd3fc5fcd1",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0009/reference_receipt.json",
+      "reference_receipt_file_sha256": "db878fd346a7376a8fa4d90c922f49986f2e24b979472e2ddf1c5c7fc5aedf29",
+      "task_spec_sha256": "88f0e29d58376b683677004ae9d30d3908f1c5ea175abaf11b0eef979d7c826e",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0010",
+      "task_id": 2000110,
+      "intent_template_id": 2001013,
+      "site": "reddit",
+      "task_type": "RETRIEVE",
+      "family_key": "reddit.retrieve.first_post_identity",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In the default Hot view of forum technology, report the first post title and submitter. Return the results as a list of objects with fields submitter (strings), title (strings).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 11,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "76c22aa2713078a94e499474c62b2a3b32981b4255e34f89cfa3d253a7caa797",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0010/reference_receipt.json",
+      "reference_receipt_file_sha256": "a4342a2d36e521b62609d0cd277a98391e5029f3866a9dda5397979b5ee26a82",
+      "task_spec_sha256": "2847908de6af2b414863f90de695b638cc43139eba564413b8df16d90585107a",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0011",
+      "task_id": 2000111,
+      "intent_template_id": 2001008,
+      "site": "map",
+      "task_type": "RETRIEVE",
+      "family_key": "map.retrieve.search_feature_attributes",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Search for Phipps Conservatory and report the feature type and street for each of the first three results. Return the results as a list of objects with fields feature_type (strings), street (strings).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 4,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "c0552069c7a6f27d57cddc65f9598627dc1d823a810319aad529a900531751e6",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0011/reference_receipt.json",
+      "reference_receipt_file_sha256": "11d73744ec87082f88f64008f7fec8085d652dffed0bb97cbf0d91eabca23a26",
+      "task_spec_sha256": "adf43d9cb7e7be91b7986195b18e39f5fe2a7192c22e0442ddff1ea539d344a6",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0012",
+      "task_id": 2000112,
+      "intent_template_id": 2001027,
+      "site": "wikipedia",
+      "task_type": "RETRIEVE",
+      "family_key": "wikipedia.retrieve.article_fact_pair",
+      "status": "quarantined_reference_failure",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "According to the Ada Lovelace article, when did Ada Lovelace first meet Charles Babbage, and who introduced them? Return the results as a list of objects with fields first_meeting (strings), introduced_by (strings).",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 9,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "failure",
+          "score": 0.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "failure",
+          "score": 0.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "quarantine",
+          "reasons": [
+            "independent execution did not complete and pass",
+            "reference check did not pass: all_evaluators_pass",
+            "reference evaluator vector did not pass: har_results",
+            "reference evaluator vector did not pass: playwright_results"
+          ],
+          "receipt_sha256": "d095a7113d379538e50da22e466fd18d17851a1c6d4e65010730b9ede43e8bb2",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": "实际文章Adult years可见段落支持1833+Mary Somerville；另一段提供June1833。公开任务未声明年月粒度，私评精确年月而模型只返回年份。",
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0012/reference_receipt.json",
+      "reference_receipt_file_sha256": "c8ac1cb45c6c0daac0c874b7221d13fd689f63ef22a3a14821bb0c011969dfa0",
+      "task_spec_sha256": "b2a16b6cb6143b07ce4eef3fa91ae71ef1f4af83c2e1aa8d37baac7b6310534e",
+      "failure_classification": "answer_precision_contract_ambiguity",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0013",
+      "task_id": 2000113,
+      "intent_template_id": 2001022,
+      "site": "shopping_admin",
+      "task_type": "NAVIGATE",
+      "family_key": "shopping_admin.navigate.customers_view",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open the default Customers list in the store administration site.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 7,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "terminal_navigation_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "427270570ad0e2629fecc30cfa63a633891e57f25c6415daeac73dc714258f3e",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0013/reference_receipt.json",
+      "reference_receipt_file_sha256": "2cc1e0a9d980b6d9bae13528a016ce9fd2572f34b3e2a745226912f6664a214a",
+      "task_spec_sha256": "d96e0d4b00f13b142db54562ade1fbe58c558098033237a4858e45f87d628928",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0014",
+      "task_id": 2000114,
+      "intent_template_id": 2001004,
+      "site": "gitlab",
+      "task_type": "NAVIGATE",
+      "family_key": "gitlab.navigate.project_overview",
+      "status": "quarantined_reference_failure",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open the overview page for project Primer / design and leave that overview open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 13,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": false,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "quarantine",
+          "reasons": [
+            "independent execution did not complete and pass",
+            "reference check did not pass: all_evaluators_pass",
+            "reference check did not pass: har_playwright_results_equal",
+            "reference evaluator vector did not pass: har_results"
+          ],
+          "receipt_sha256": "e8829fa5d620f01036cd525016990f6323d014855b810b99f85f810b84fd773c",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": "终态overview与URL正确；同URL的200及未完成-1请求在HAR/PW末序不同，last_event_only导致HAR0/PW1。",
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0014/reference_receipt.json",
+      "reference_receipt_file_sha256": "4095a1fa7025c42302a4ba7118d117253b29061844b5300ec155ab0ebf888fc3",
+      "task_spec_sha256": "747c23c5bb6a910c57b7a8935070dfdf793d19b658bbbf76b294eaa7be86588d",
+      "failure_classification": "trace_completion_ordering",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0015",
+      "task_id": 2000115,
+      "intent_template_id": 2001003,
+      "site": "gitlab",
+      "task_type": "NAVIGATE",
+      "family_key": "gitlab.navigate.explore_projects",
+      "status": "quarantined_reference_failure",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open Explore Projects and leave the list ordered by Updated date.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 3,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": false,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": false
+        },
+        {
+          "kind": "visible_text",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "quarantine",
+          "reasons": [
+            "independent execution did not complete and pass",
+            "reference check did not pass: all_evaluators_pass",
+            "reference check did not pass: final_state_confirmed",
+            "reference evaluator vector did not pass: har_results",
+            "reference evaluator vector did not pass: playwright_results"
+          ],
+          "receipt_sha256": "4ec121ade2106906bfc5a6f46a9d8cc56b553766ba960a98db95e50cc70db63b",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": "公开Explore Projects+Updated date已满足；/explore默认排序已为Updated date，私评强制另一入口及显式sort参数。",
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0015/reference_receipt.json",
+      "reference_receipt_file_sha256": "e638210603811b931066a75b12ac74ea3c48674c41afd48d4112a8481e8a1b6e",
+      "task_spec_sha256": "457d68a0e1fb9ca9fbb0871e65e80510cb48e41a46ac6eb881fe515be02502fa",
+      "failure_classification": "evaluator_false_negative",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0016",
+      "task_id": 2000116,
+      "intent_template_id": 2001017,
+      "site": "shopping",
+      "task_type": "NAVIGATE",
+      "family_key": "shopping.navigate.product_page",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Find and open the detail page for IPASON Gaming Desktop AMD Athlon 3000G(2 Core 3.5GHz) Radeon Vega 3 240GB SSD 8GB 2666MHz 550W 80 Plus PSU Windows 10 Home Gaming PC (AMD 3000G 8G 240G SSD). Leave its detail page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 15,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "3cc5c3ebca7fe5db9344a2a5d9e5fa09aa72e5fe62b22c153dbaa64ef2a23d4e",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0016/reference_receipt.json",
+      "reference_receipt_file_sha256": "599d98df3116546cb38c368f2acaa6cdc655446151bdc98d2bb6cc7f8aa8e793",
+      "task_spec_sha256": "340e1e05da86e9021cc82f3ffed37f6b011bacd7957a7307d7ca7c43144f2ffe",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0017",
+      "task_id": 2000117,
+      "intent_template_id": 2001017,
+      "site": "shopping",
+      "task_type": "NAVIGATE",
+      "family_key": "shopping.navigate.product_page",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Find and open the detail page for LED Wireless Mouse,Wireless Mouse for MacBook Air/Wireless Mouse for MacBook Pro/Mac/Laptop/MacBook/iPad,Bluetooth Mouse for MacBook Air/Pro/Mac/ipad/ipad pro (Rose Gold). Leave its detail page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 7,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "667340238e1ec485272868c480ce297463df2699d87fb3cab3d01961a80c44d0",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0017/reference_receipt.json",
+      "reference_receipt_file_sha256": "4069bdf2dae0e3d6bbc958e391356b408f5d4f2a7ff82e484e6d70425a3a9362",
+      "task_spec_sha256": "8094d3c5149b766c6944c59d3a4f9fc2b91111e40081763780d8e773064098e6",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0018",
+      "task_id": 2000118,
+      "intent_template_id": 2001011,
+      "site": "reddit",
+      "task_type": "NAVIGATE",
+      "family_key": "reddit.navigate.forum_hot",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open forum science and leave its Hot post list displayed.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 8,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "terminal_navigation_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "cf76e3b4a89aa6294cab506e707b22c6079b31d69e7b5cffd6859ed24f214d4d",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0018/reference_receipt.json",
+      "reference_receipt_file_sha256": "883f5f8f609e6b08051df1727d55b347aaa445cbbb78261dc0375197c799e62c",
+      "task_spec_sha256": "e64c3f2624497d56029558bff2c352f10318739cda4e0fe011a53faa2b379228",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0019",
+      "task_id": 2000119,
+      "intent_template_id": 2001012,
+      "site": "reddit",
+      "task_type": "NAVIGATE",
+      "family_key": "reddit.navigate.forum_new",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Open forum technology and leave its New post list displayed.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 17,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "terminal_navigation_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "14ffdabbfdb33b74f5313ab9fb950b3e617bc06bd54aede533f4bb48ce30da0c",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0019/reference_receipt.json",
+      "reference_receipt_file_sha256": "a1c25bdf9387834cad83c7342091905ce8d41b84a8fd37bdc6ee4e924608acc8",
+      "task_spec_sha256": "3b7fe6e7391fa6bc4b85c46cffcb3b57e58830cf3137da428685335940a28f2e",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0020",
+      "task_id": 2000120,
+      "intent_template_id": 2001007,
+      "site": "map",
+      "task_type": "NAVIGATE",
+      "family_key": "map.navigate.place_search",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Search the map for Phipps Conservatory and leave its results view displayed.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 5,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "fe905638f4740cf6ac6926f6057f30484bc40ca67d624a6690e2cc0849310833",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0020/reference_receipt.json",
+      "reference_receipt_file_sha256": "dbc564b0ddb0802b4597b098ba896a5b515452aa40ebe440079c14f6014a93e9",
+      "task_spec_sha256": "14375afc9de16bec1caaafefc0ac85900bf45ad588a18c6b2b65290c3ba47ee8",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0021",
+      "task_id": 2000121,
+      "intent_template_id": 2001026,
+      "site": "wikipedia",
+      "task_type": "NAVIGATE",
+      "family_key": "wikipedia.navigate.article_page",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Find and open the article for Ada Lovelace.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 8,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "terminal_navigation_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": false,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "24c080fdf53009d6cbdeb76df125a2e177133b217e30328f0254bbbbe85a650a",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0021/reference_receipt.json",
+      "reference_receipt_file_sha256": "6efa0bdc7af3a687e74a70238aefb8bc2d65fa37196219dbc41ff56796b084e4",
+      "task_spec_sha256": "b60f930d32d790c1a6ca67c384f8fcfdbaea632d34ab34f793df881e377c7750",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0022",
+      "task_id": 2000122,
+      "intent_template_id": 2001020,
+      "site": "shopping_admin",
+      "task_type": "MUTATE",
+      "family_key": "shopping_admin.mutate.create_category",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Create exactly 1 product category named V02 Pilot Category 02 under Default Category. Set its active status to True. Keep all existing category names unchanged, and leave the saved category's details open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 11,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "checked",
+          "passed": true
+        },
+        {
+          "kind": "text_set_preserved",
+          "passed": true
+        },
+        {
+          "kind": "ancestor_text",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_is_active_expected_vector": true,
+            "equivalent_post_data_e1_name_expected_vector": true,
+            "equivalent_post_data_e1_parent_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_is_active_expected_vector": true,
+            "negative_post_data_e1_name_expected_vector": true,
+            "negative_post_data_e1_parent_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "de5c3e2a6ac0d10d1e69c63b39254dc600a952c573fc907ce9737412323ee46c",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0022/reference_receipt.json",
+      "reference_receipt_file_sha256": "6dbf1bba8204037e8957cb9698389f242897ff893a655ced58cd3f023ccc850e",
+      "task_spec_sha256": "5009dd99c18861aff686c8420e63104d35e367e37c0420f27286c52004983114",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0023",
+      "task_id": 2000123,
+      "intent_template_id": 2001021,
+      "site": "shopping_admin",
+      "task_type": "MUTATE",
+      "family_key": "shopping_admin.mutate.product_short_description",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "For product Cronus Yoga Pant -33-Blue (SKU MP12-33-Blue), set its short description to \"V02 pilot catalog description.\". Keep its product name, SKU and listed price unchanged. Leave the saved product edit page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 31,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_product[name]_expected_vector": true,
+            "equivalent_post_data_e1_product[price]_expected_vector": true,
+            "equivalent_post_data_e1_product[sku]_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_product[name]_expected_vector": true,
+            "negative_post_data_e1_product[price]_expected_vector": true,
+            "negative_post_data_e1_product[sku]_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "d06fc5ec6786461774128b38bf706673bf278282ca9f5d4068906f9b98e87d6a",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0023/reference_receipt.json",
+      "reference_receipt_file_sha256": "a57dbd2441c427111a0556c44351a4a37b395087938dbc21324c2848dcdf8365",
+      "task_spec_sha256": "2dc0ad56b32c395f1b228a3313fe4906e18ae50d72cab057ec1fffa67e853401",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0024",
+      "task_id": 2000124,
+      "intent_template_id": 2001000,
+      "site": "gitlab",
+      "task_type": "MUTATE",
+      "family_key": "gitlab.mutate.create_issue",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In project Primer / design, create an issue titled \"V02 pilot issue 01\" with description \"Track the independent single-site pipeline verification.\". Leave the new issue's details open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 12,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_issue[description]_expected_vector": true,
+            "equivalent_post_data_e1_issue[title]_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_issue[description]_expected_vector": true,
+            "negative_post_data_e1_issue[title]_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "2d173e7eff5dda48193e50102ad10ec155d8864ecc32f5edac4fcf5d3cc0c087",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0024/reference_receipt.json",
+      "reference_receipt_file_sha256": "9374c44a93bd614dd3cb64948f3906c3db30eef6f7e2beac911d1c3a4b25b50a",
+      "task_spec_sha256": "18f90d90037a6267624ddc24b98b0fd149dae3d3bda0f27c2b612034cecd8c27",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0025",
+      "task_id": 2000125,
+      "intent_template_id": 2001001,
+      "site": "gitlab",
+      "task_type": "MUTATE",
+      "family_key": "gitlab.mutate.issue_comment",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In project Primer / design, add the comment \"V02 pilot review note.\" to issue #29 titled \"Filters & Clearing Filters\". Preserve its title, description and status, and leave that issue's details open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 19,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "visible_text",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_$.note.note_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_$.note.note_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "4f7a80ccba9660e00b353a8688ae396e1cf02f7980d13fc16ac2542b45b7e62b",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0025/reference_receipt.json",
+      "reference_receipt_file_sha256": "a19db6882c8966aaccbc5a69e7832561b7d21cfff8e2048af2b792ff9d334249",
+      "task_spec_sha256": "c9e0cf54013a81622aa61a13a6dd2b941581f411a965c01b75d4cc66836c59c3",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0026",
+      "task_id": 2000126,
+      "intent_template_id": 2001002,
+      "site": "gitlab",
+      "task_type": "MUTATE",
+      "family_key": "gitlab.mutate.star_project",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Star project Primer / design and leave its overview page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 4,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "0c8ac6016e5d6967a3229b0668ac7ddab79e9740bf9006d10f42c2996d04f1b5",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0026/reference_receipt.json",
+      "reference_receipt_file_sha256": "6a04b9420e472396d0b9687a0edf54d74b523395f11202bec12527668d052fcf",
+      "task_spec_sha256": "205a5fb8f5fd97c26ab48c1cae57f6177e360ad20f9439b25c2ae3c29c30d44e",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0027",
+      "task_id": 2000127,
+      "intent_template_id": 2001015,
+      "site": "shopping",
+      "task_type": "MUTATE",
+      "family_key": "shopping.mutate.cart_add_one",
+      "status": "quarantined_reference_failure",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Starting from the empty shopping cart, add 1 unit of IPASON Gaming Desktop AMD Athlon 3000G(2 Core 3.5GHz) Radeon Vega 3 240GB SSD 8GB 2666MHz 550W 80 Plus PSU Windows 10 Home Gaming PC (AMD 3000G 8G 240G SSD). Keep the cart limited to that product and leave the Cart page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 12,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "failure",
+          "score": 0.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        },
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "text_set_preserved",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_product_expected_vector": true,
+            "equivalent_post_data_e1_qty_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_product_expected_vector": true,
+            "negative_post_data_e1_qty_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "quarantine",
+          "reasons": [
+            "independent execution did not complete and pass",
+            "reference check did not pass: all_evaluators_pass",
+            "reference evaluator vector did not pass: har_results",
+            "reference evaluator vector did not pass: playwright_results"
+          ],
+          "receipt_sha256": "87f957c6092cb6e220f3d33114d00f27fa1e35579ab897e81edc1a18a6f4eeda",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": "模型从搜索列表真实Add to Cart，POST无qty字段（站点默认1），刷新末态唯一目标商品qty1且其它状态均通过；私评却要求显式qty=1。",
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0027/reference_receipt.json",
+      "reference_receipt_file_sha256": "201921545217534802f3d96933df0392c5dac11ca3640be997c77e37d252cde0",
+      "task_spec_sha256": "e603cd01294e058c966ec7b6003959975b1dc82b09fd543decf1e6b02e550bfe",
+      "failure_classification": "evaluator_false_negative",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0028",
+      "task_id": 2000128,
+      "intent_template_id": 2001016,
+      "site": "shopping",
+      "task_type": "MUTATE",
+      "family_key": "shopping.mutate.cart_quantity",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "Starting from the empty shopping cart, add 1 unit of LED Wireless Mouse,Wireless Mouse for MacBook Air/Wireless Mouse for MacBook Pro/Mac/Laptop/MacBook/iPad,Bluetooth Mouse for MacBook Air/Pro/Mac/ipad/ipad pro (Rose Gold) with color Rose gold. Then on the Cart page change its quantity to 2. Keep the cart limited to that product and leave the Cart page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 15,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "final_url",
+          "passed": true
+        },
+        {
+          "kind": "input_value",
+          "passed": true
+        },
+        {
+          "kind": "text_set_preserved",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_options[69837]_expected_vector": true,
+            "equivalent_post_data_e1_product_expected_vector": true,
+            "equivalent_post_data_e1_qty_expected_vector": true,
+            "equivalent_post_data_e2_$.*_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_options[69837]_expected_vector": true,
+            "negative_post_data_e1_product_expected_vector": true,
+            "negative_post_data_e1_qty_expected_vector": true,
+            "negative_post_data_e2_$.*_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "0a862a6ec0a25cebe9dfc01f5a57d646ab917b73b257c5b24914be8d0385bd5c",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0028/reference_receipt.json",
+      "reference_receipt_file_sha256": "70c8732d4d068aead976a71af3b165fc2e88a4b0b9755c06907421887d20ef61",
+      "task_spec_sha256": "6955676105b11a3e91cbf2f6d8ef8e8f2028ab7d1a3295575db116f5c641c2b9",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0029",
+      "task_id": 2000129,
+      "intent_template_id": 2001010,
+      "site": "reddit",
+      "task_type": "MUTATE",
+      "family_key": "reddit.mutate.post_upvote",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In forum science using its default Hot order, upvote its first post, titled \"Living in a greener residential area increases the diversity of oligosaccharides in breastmilk. This in turn may affect the child’s health, as the oligosaccharides in breastmilk can protect the infant from harmful microbes and reduce the risk of developing allergies and diseases.\" by universityofturku. Keep the post title unchanged, and leave its comments page open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 11,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_choice_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_choice_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "bdfbe3666ee7b383f045d4013814328194336bc3eb3b9d04f04e95102829b2f0",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0029/reference_receipt.json",
+      "reference_receipt_file_sha256": "3781d8e81b4a42c12057f504ec157411db554022a4dee63188881da4373a560c",
+      "task_spec_sha256": "115d59669d4a0868b55ef93e354ad80ee8217a4f812ff5e3b97a3e1e198f6c12",
+      "retained_attempts": []
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0030",
+      "task_id": 2000130,
+      "intent_template_id": 2001009,
+      "site": "reddit",
+      "task_type": "MUTATE",
+      "family_key": "reddit.mutate.post_comment",
+      "status": "machine_pass_pending_human_review",
+      "candidate_revision": 1,
+      "training_eligible": false,
+      "intent": "In forum technology using its default Hot order, add exactly 1 top-level comment \"V02 pilot independent verification note.\" to its first post, titled \"Brain cancer vaccine succeeds at prolonging survival in Phase 3 trial\" by Sorin61. Keep the post title and the initially displayed comment texts unchanged. After posting, reopen the post's comments page using its comment-count link and leave it open.",
+      "model_id": "gpt-5.5",
+      "response_model_versions": [
+        "gpt-5.5-2026-04-24"
+      ],
+      "steps": 11,
+      "evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "playwright_evaluator_results": [
+        {
+          "name": "AgentResponseEvaluator",
+          "status": "success",
+          "score": 1.0
+        },
+        {
+          "name": "NetworkEventEvaluator",
+          "status": "success",
+          "score": 1.0
+        }
+      ],
+      "trace_results_equal": true,
+      "final_state_confirmed": true,
+      "final_state_checks": [
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "text_set_preserved",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "ancestor_text",
+          "passed": true
+        },
+        {
+          "kind": "visible_text_exact",
+          "passed": true
+        },
+        {
+          "kind": "final_url",
+          "passed": true
+        }
+      ],
+      "reloaded_for_persistence": true,
+      "stages": {
+        "contract": {
+          "status": "pass"
+        },
+        "grounding_evidence": {
+          "status": "pass",
+          "reasons": []
+        },
+        "author_replay": {
+          "status": "pass",
+          "reasons": [],
+          "checks": {
+            "equivalent_post_data_e1_reply_to_submission_48670[comment]_expected_vector": true,
+            "har_playwright_results_equal": true,
+            "negative_empty_trace_expected_vector": true,
+            "negative_post_data_e1_reply_to_submission_48670[comment]_expected_vector": true,
+            "negative_wrong_response_expected_vector": true,
+            "negative_wrong_status_expected_vector": true,
+            "negative_wrong_task_type_expected_vector": true,
+            "no_evaluator_errors": true,
+            "positive_har_expected_vector": true,
+            "positive_playwright_expected_vector": true
+          },
+          "evaluator_errors": [],
+          "evaluator_limitations": []
+        },
+        "contamination": {
+          "status": "pass",
+          "receipt_status": "pass",
+          "reasons": []
+        },
+        "independent_reference": {
+          "status": "pass",
+          "reasons": [],
+          "receipt_sha256": "b1652409b3a87ac430c0aa0e4ad2fb30ce2fe81be172dc8e606b4708ff73b70a",
+          "model_id": "gpt-5.5"
+        },
+        "human_review": {
+          "status": "pending",
+          "reason": "Human decision is absent."
+        },
+        "canonical_stage": {
+          "status": "pending",
+          "reason": "Run canonical stage with its existing owner."
+        },
+        "target_model_export": {
+          "status": "pending",
+          "reason": "Target-model SFT export has not been verified."
+        }
+      },
+      "semantic_failure_reason": null,
+      "pending_reason": "Human review, canonical stage and target-model SFT export remain pending.",
+      "reference_receipt_path": "reference_runs/wavgen-v02-pilot30-0030/reference_receipt.json",
+      "reference_receipt_file_sha256": "51905992b7dd055dee2d33a4e220882a308d230fdebee121e2c7a454a4ed1a33",
+      "task_spec_sha256": "3da6ffbe5f7975ca2886f2deec6538b9460244b00ba4b68aec210b47f90754b0",
+      "retained_attempts": [
+        {
+          "generated_task_id": "wavgen-v02-pilot30-0030",
+          "attempt_id": "action-contract-defects-01",
+          "classification": "model_navigation_error_with_execution_contract_defects",
+          "classification_reason": "external_link_click_followed_by_ignored_wait_and_type_press_enter",
+          "raw_recorded_status": "fail",
+          "raw_steps": 51,
+          "har_evaluator_scores": [
+            {
+              "name": "AgentResponseEvaluator",
+              "score": 0.0
+            },
+            {
+              "name": "NetworkEventEvaluator",
+              "score": 0.0
+            }
+          ],
+          "included_in_semantic_success_rate": false,
+          "exclusion_reason": "Execution contract was invalid; original navigation error is retained rather than relabeled as pure infrastructure.",
+          "business_mutation": false,
+          "evidence_root": "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01",
+          "reference_receipt_sha256": "e82b73481abdfe8369f709e35fa2ceba98144263a1aed70d8468332b5887e61a",
+          "task_or_gt_changed": false
+        }
+      ]
+    }
+  ]
+}

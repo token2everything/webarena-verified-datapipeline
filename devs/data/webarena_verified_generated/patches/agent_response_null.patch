@@ -1,0 +1,56 @@
+--- a/webarena_verified/core/evaluation/evaluators/agent_response_evaluator.py
++++ b/webarena_verified/core/evaluation/evaluators/agent_response_evaluator.py
+@@ -92,6 +92,9 @@
+ 
+         _normalized_values = {}
+         for k in config.expected.model_fields_set:
++            if k == "error_details":
++                # Diagnostics are excluded from the normalized expected response.
++                continue
+             if k == "task_type" and k not in value and "performed_operation" in value:
+                 k = "performed_operation"  # Support legacy field name
+ 
+@@ -104,15 +107,11 @@
+ 
+             if k == "retrieved_data":
+                 _attr_value = value.get(k, "")
+-                _normalized_value = (
+-                    self._normalized_retrieved_data(
+-                        retrieved_data_raw=_attr_value,
+-                        strict=False,
+-                        context=context,
+-                        config=config,
+-                    )
+-                    if context.task.is_retrieve_task
+-                    else None
++                _normalized_value = self._normalized_retrieved_data(
++                    retrieved_data_raw=_attr_value,
++                    strict=False,
++                    context=context,
++                    config=config,
+                 )
+             else:
+                 _normalized_value = None
+@@ -142,6 +141,11 @@
+         retrieved_data_raw = (
+             (retrieved_data_raw,) if not isinstance(retrieved_data_raw, (list, tuple)) else tuple(retrieved_data_raw)
+         )
++        if config.results_schema.get("type") == "null":
++            if strict:
++                raise ValueError("Null results schema cannot contain expected retrieved_data")
++            return retrieved_data_raw
++
+         _derender_url_fct = partial(context.config.derender_url, sites=context.task.sites, strict=strict)
+         # TODO: Maybe call normalize array directly here
+         return self.value_normalizer.normalize_array(
+@@ -178,8 +182,8 @@
+ 
+         # Compare retrieved_data
+         actual_retrieved_data = actual_normalized.get("retrieved_data", None)
+-        if not context.task.is_retrieve_task or not actual_normalized:
+-            # Ignore retrieved_data comparison for non-retrieve tasks or invalid actual response
++        if not actual_normalized:
++            # Ignore retrieved_data comparison for invalid actual response
+             return assertions
+ 
+         expected_retrieved_data = expected_normalized.get("retrieved_data", None)

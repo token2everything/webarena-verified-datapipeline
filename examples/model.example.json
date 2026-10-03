@@ -1,0 +1,7 @@
+{
+  "base_url": "https://example.invalid/v1",
+  "api_key": "REPLACE_LOCALLY",
+  "api_type": "openai_responses",
+  "model": "REPLACE_WITH_ACTUAL_MODEL_ID",
+  "params": {}
+}

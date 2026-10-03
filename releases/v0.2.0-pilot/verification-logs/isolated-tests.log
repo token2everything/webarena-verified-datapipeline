@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-9.0.3, pluggy-1.6.0
+rootdir: /root/webarena-verified-pipeline
+configfile: pyproject.toml
+plugins: anyio-4.15.1, platformdirs-4.12.0, xdist-3.8.0, asyncio-1.3.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 109 items
+
+devs/data/webarena_verified_generated/tests/test_evaluator_build.py ...  [  2%]
+devs/data/webarena_verified_generated/tests/test_generated_contract.py . [  3%]
+.......                                                                  [ 10%]
+devs/data/webarena_verified_generated/tests/test_quality_check.py ...... [ 15%]
+.............                                                            [ 27%]
+devs/data/webarena_verified_generated/tests/test_reference.py .......... [ 36%]
+....................................                                     [ 69%]
+devs/data/webarena_verified_generated/tests/test_replay.py ............. [ 81%]
+.........                                                                [ 89%]
+devs/data/webarena_verified_generated/tests/test_semantic_author.py .... [ 93%]
+.......                                                                  [100%]
+
+=============================== warnings summary ===============================
+devs/data/webarena_verified_generated/tests/test_reference.py: 248 warnings
+devs/data/webarena_verified_generated/tests/test_replay.py: 2640 warnings
+  /root/cua-lite/.venv/lib/python3.12/site-packages/url_normalize/normalize_host.py:35: DeprecationWarning: Transitional processing is deprecated in UTS #46 and has no effect. The transitional argument will be removed in a future version.
+    idna.encode(p, uts46=True, transitional=True).decode(charset)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================ 109 passed, 2888 warnings in 120.23s (0:02:00) ================

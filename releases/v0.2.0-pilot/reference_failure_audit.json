@@ -1,0 +1,114 @@
+{
+  "recorded_at": "2026-10-03T13:45:36.056479+00:00",
+  "tasks": [
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0004",
+      "classification": "execution_infrastructure",
+      "reason": "wait动作声明秒数未执行；加载占位0被提前读取，真实GT70由作者和末态确认。原尝试保留，待修复后干净执行。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01/public_task.json",
+        "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01/agent_response.txt",
+        "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01/reference_receipt.json",
+        "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01/final_state.json",
+        "reference_attempts/wavgen-v02-pilot30-0004/wait-not-executed-01/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0006",
+      "classification": "evaluator_false_negative",
+      "reason": "AR正确；公开Explore Projects+Updated date已满足，私评只接受/explore/projects路径，模型合法入口/explore?sort=latest_activity_desc被拒。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_runs/wavgen-v02-pilot30-0006/public_task.json",
+        "reference_runs/wavgen-v02-pilot30-0006/agent_response.txt",
+        "reference_runs/wavgen-v02-pilot30-0006/reference_receipt.json",
+        "reference_runs/wavgen-v02-pilot30-0006/final_state.json",
+        "reference_runs/wavgen-v02-pilot30-0006/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0012",
+      "classification": "answer_precision_contract_ambiguity",
+      "reason": "实际文章Adult years可见段落支持1833+Mary Somerville；另一段提供June1833。公开任务未声明年月粒度，私评精确年月而模型只返回年份。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_runs/wavgen-v02-pilot30-0012/public_task.json",
+        "reference_runs/wavgen-v02-pilot30-0012/agent_response.txt",
+        "reference_runs/wavgen-v02-pilot30-0012/reference_receipt.json",
+        "reference_runs/wavgen-v02-pilot30-0012/final_state.json",
+        "reference_runs/wavgen-v02-pilot30-0012/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0014",
+      "classification": "trace_completion_ordering",
+      "reason": "终态overview与URL正确；同URL的200及未完成-1请求在HAR/PW末序不同，last_event_only导致HAR0/PW1。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_runs/wavgen-v02-pilot30-0014/public_task.json",
+        "reference_runs/wavgen-v02-pilot30-0014/agent_response.txt",
+        "reference_runs/wavgen-v02-pilot30-0014/reference_receipt.json",
+        "reference_runs/wavgen-v02-pilot30-0014/final_state.json",
+        "reference_runs/wavgen-v02-pilot30-0014/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0015",
+      "classification": "evaluator_false_negative",
+      "reason": "公开Explore Projects+Updated date已满足；/explore默认排序已为Updated date，私评强制另一入口及显式sort参数。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_runs/wavgen-v02-pilot30-0015/public_task.json",
+        "reference_runs/wavgen-v02-pilot30-0015/agent_response.txt",
+        "reference_runs/wavgen-v02-pilot30-0015/reference_receipt.json",
+        "reference_runs/wavgen-v02-pilot30-0015/final_state.json",
+        "reference_runs/wavgen-v02-pilot30-0015/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0027",
+      "classification": "evaluator_false_negative",
+      "reason": "模型从搜索列表真实Add to Cart，POST无qty字段（站点默认1），刷新末态唯一目标商品qty1且其它状态均通过；私评却要求显式qty=1。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_runs/wavgen-v02-pilot30-0027/public_task.json",
+        "reference_runs/wavgen-v02-pilot30-0027/agent_response.txt",
+        "reference_runs/wavgen-v02-pilot30-0027/reference_receipt.json",
+        "reference_runs/wavgen-v02-pilot30-0027/final_state.json",
+        "reference_runs/wavgen-v02-pilot30-0027/terminal.png"
+      ]
+    },
+    {
+      "generated_task_id": "wavgen-v02-pilot30-0030",
+      "classification": "model_navigation_error_with_execution_contract_defects",
+      "reason": "第8轮误点搜索结果外链，被固定站点策略拦截而进入chrome-error；同时旧wait未等待、type.press_enter未执行Enter，搜索与错误后的恢复指令多次被丢弃。保留原AR/NE 0分；修复工具契约后仅允许原任务原GT重新执行。",
+      "classification_status": "confirmed_by_primary_agent",
+      "original_scores_preserved": true,
+      "task_or_gt_changed": false,
+      "evidence": [
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/turn_0005/03_actions.json",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/turn_0006/03_actions.json",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/turn_0007/env_result_images/0000_0002_from_call_W2J5zo9zXaUx7Y6oEomG2hYJ.png",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/turn_0012/03_actions.json",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/turn_0012/04_results.json",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/trace.zip",
+        "reference_attempts/wavgen-v02-pilot30-0030/action-contract-defects-01/reference_receipt.json"
+      ],
+      "scope": "historical_attempt_before_action_contract_repair"
+    }
+  ],
+  "policy": "Evaluator/trace defects and answer precision ambiguity remain quarantined; only proven execution infrastructure failures receive a fresh attempt."
+}

@@ -1,0 +1,18 @@
+{
+  "batch_id": "wav-v02-pilot30-20261003-codex1",
+  "shared_path": "/mnt/shared-storage-user/songdemin/user/laibowen-p/webarena-verified/1.2.3/generated/v0.2/wav-v02-pilot30-20261003-codex1",
+  "task_count": 30,
+  "reference_pass_count": 25,
+  "quarantined_count": 5,
+  "human_review": "pending",
+  "canonical_stage": "pending",
+  "target_model_export": "pending",
+  "training_eligible_count": 0,
+  "transfer_manifest": "/mnt/shared-storage-user/songdemin/user/laibowen-p/webarena-verified/1.2.3/generated/v0.2/wav-v02-pilot30-20261003-codex1/TRANSFER_MANIFEST.json",
+  "transfer_manifest_sha256": "aab0b9a8310c251acfb6b8fbd9b414d577145e75c98ed680c6efc357eedd6b05",
+  "public_jsonl_sha256": "5c849db2e8369b325bc91df6f636849e8a02ae3dd614b53da76eb411cb7ddc4f",
+  "private_jsonl_sha256": "2faeff1c877c5d1c22b18ee85baf0d77827d84ca8895528fe82148c22e664f9c",
+  "source_files": 6143,
+  "source_bytes": 2864948615,
+  "feishu": "https://gcnxubmy1vgu.feishu.cn/wiki/KogewnJCViCdAJkFZGUc80eLnab#doxcn9tKQ79Ja24yBNbdlCX0wmc"
+}

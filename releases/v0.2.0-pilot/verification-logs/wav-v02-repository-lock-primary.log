@@ -1,0 +1,3 @@
+Using CPython 3.12.12
+error: Failed to fetch: `http://pypi.i.h.pjlab.org.cn/brain/dev/+simple/browsergym-core/`
+  Caused by: HTTP status server error (502 Bad Gateway) for url (http://pypi.i.h.pjlab.org.cn/brain/dev/+simple/browsergym-core/)

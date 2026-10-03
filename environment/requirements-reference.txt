@@ -1,0 +1,8 @@
+# Direct API-runtime versions observed in the shared webarena-api-extra archive.
+# Evaluator dependencies are in pyproject.toml; this is not a transitive lock.
+litellm==1.80.0
+openai==3.19.2
+pyarrow==24.0.0
+numpy==2.5.3
+psutil==7.2.2
+jsonschema==4.26.0

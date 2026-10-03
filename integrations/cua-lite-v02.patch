@@ -1,0 +1,1590 @@
+diff --git a/lite/gym/envs/browsergym/README.md b/lite/gym/envs/browsergym/README.md
+index 8b04f04..43c5b2b 100644
+--- a/lite/gym/envs/browsergym/README.md
++++ b/lite/gym/envs/browsergym/README.md
+@@ -1,13 +1,14 @@
+ # BrowserGym
+ 
+-`--env-id` `browsergym.miniwob` · `browsergym.visualwebarena` · `browsergym.webarena`
++`--env-id` `browsergym.miniwob` · `browsergym.webarena` · `browsergym.webarena_verified` · `browsergym.visualwebarena`
+ 
+-CUA-Lite wrapper for [BrowserGym](https://github.com/ServiceNow/BrowserGym). 1847 tasks across 3 benchmarks (MiniWoB / WebArena / VisualWebArena), via `gym.make("browsergym.<bench>@<task_id>")` with `LiteBrowserActionSpace` + browser `extra_tools` (`back`, `goto`). See [docs/envs.md](/docs/envs.md) for the env contract.
++CUA-Lite wrapper for [BrowserGym](https://github.com/ServiceNow/BrowserGym). 2659 tasks across 4 benchmarks (MiniWoB / WebArena / WebArena-Verified / VisualWebArena), via `gym.make("browsergym.<bench>@<task_id>")` with `LiteBrowserActionSpace` + browser `extra_tools` (`back`, `goto`). See [docs/envs.md](/docs/envs.md) for the env contract.
+ 
+ | Benchmark | Task ID prefix | Tasks | Infra | Difficulty |
+ |---|---|---|---|---|
+ | MiniWoB | `browsergym.miniwob@` | 125 | Local HTTP server | Low |
+ | WebArena | `browsergym.webarena@` | 812 | 5 Docker containers, ~32 GB RAM, ~60 GB images + ~200 GB OSM assets by default | Medium |
++| WebArena-Verified | `browsergym.webarena_verified@` | 812 full / 258 Hard | Official Verified site images + external Wikipedia/Map data | Medium |
+ | VisualWebArena | `browsergym.visualwebarena@` | 910 | WebArena + Classifieds container | Medium |
+ 
+ ## Setup
+@@ -15,11 +16,28 @@ CUA-Lite wrapper for [BrowserGym](https://github.com/ServiceNow/BrowserGym). 184
+ ```bash
+ # One-time: download tars/zip/clone + `docker load` images (required for both modes).
+ uv run --no-sync bash lite/gym/envs/browsergym/scripts/install.sh <benchmark>
+-# benchmark = webarena (~60 GB images + ~200 GB OSM assets by default) | visualwebarena (webarena + classifieds) | miniwob (no Docker)
++# benchmark = webarena | webarena_verified | visualwebarena | miniwob
+ ```
+ 
+-WA/VWA also need a judge key — `export OPENAI_API_KEY="..."` (required
+-benchmark-wide; without it `reset()` hard-fails). MiniWoB needs none.
++WebArena and VisualWebArena need a judge key — `export OPENAI_API_KEY="..."`
++(required benchmark-wide; without it `reset()` hard-fails). WebArena-Verified
++uses deterministic response/network-trace evaluators and needs no judge key.
++
++### WebArena-Verified sites
++
++`install.sh webarena_verified` pins `browsergym-core==0.14.3`,
++`browsergym-experiments==0.14.3`, `browsergym-webarena-verified==0.14.3`, and
++`webarena-verified==1.2.3` (full dataset SHA-256
++`d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30`).
++The site stack is deliberately operator-managed: Verified uses fixed website
++images with benchmark-specific fixes and env-ctrl, so CUA-Lite will not replace
++it with the older WebArena images. Start the six official images following the
++[upstream environment guide](https://servicenow.github.io/webarena-verified/environments/),
++then set `WA_SHOPPING`, `WA_SHOPPING_ADMIN`, `WA_REDDIT`, `WA_GITLAB`,
++`WA_WIKIPEDIA`, `WA_MAP`, and `WA_HOMEPAGE` in the env-server process.
++`PW_EXTRA_HEADERS` may point to the upstream JSON header file when the site
++deployment requires header authentication. Wikipedia and Map require their
++published external data; do not report full-suite coverage when either is absent.
+ 
+ **Env-server mode (recommended)** — launch [`scripts/serve_env.py`](/scripts/serve_env.py);
+ clients set both `CUA_LITE_ENV_SERVER_URL` and `CUA_LITE_ENV_SERVER_TOKEN`.
+@@ -35,12 +53,17 @@ Use `localhost` only when the env-server and rollout client share the same netwo
+ 
+ WA/VWA boot slowly (gitlab ~5-15 min); a casual run just lets first-wave tasks retry through the cold boot (a retriable 503 + a `warming: gitlab …` message). For operator warm/reset notes, see [WA/VWA runtime](#wavwa-runtime).
+ 
+-**Direct mode** — `gym.make`'s `ensure_services` auto-starts the stack; or bring it up yourself first:
++**Direct mode (MiniWoB / legacy WA / VWA)** — `gym.make`'s
++`ensure_services` auto-starts the local stack; or bring it up yourself first:
+ 
+ ```bash
+ uv run --no-sync bash lite/gym/envs/browsergym/scripts/start.sh <benchmark>   # bring the stack up
+ ```
+ 
++WebArena-Verified is different: direct mode only probes the operator-managed
++`WA_*` endpoints configured above. It never invokes `start.sh` or starts/stops
++the legacy WebArena containers.
++
+ <details>
+ <summary>Setup notes</summary>
+ 
+@@ -86,7 +109,9 @@ uv run python -c "
+ import asyncio, lite.gym as gym
+ async def main():
+     env = gym.make('browsergym.miniwob@click-dialog', max_steps=5)
+-    # or: 'browsergym.webarena@0' / 'browsergym.visualwebarena@0'
++    # or: 'browsergym.webarena@0' /
++    #     'browsergym.webarena_verified@279.0.2' /
++    #     'browsergym.visualwebarena@0'
+     r = await env.reset(); print(f'Instruction: {r.text}'); await env.close()
+ asyncio.run(main())"
+ ```
+@@ -164,14 +189,19 @@ Tunable defaults live in [`configs/default.yaml`](/lite/gym/envs/browsergym/conf
+ import lite.gym as gym
+ print(gym.registry.task_ids("browsergym.miniwob"))        # 125 tasks
+ print(gym.registry.task_ids("browsergym.webarena"))       # 812 tasks
++print(gym.registry.task_ids("browsergym.webarena_verified"))  # 812 tasks
+ print(gym.registry.task_ids("browsergym.visualwebarena")) # 910 tasks
+ ```
+ 
+-Metadata in `env.metadata.others`: `sites`, `mutating`, `depends_on`, `llm_as_a_judge` — see [Filtering tasks](#filtering-tasks-static-task-facts) below.
++WebArena-Verified task IDs preserve BrowserGym's official
++`<intent_template_id>.<task_id>.<revision>` identity. Its metadata adds
++`hard: bool` for the official 258-task Hard subset. Other static fields include
++`sites`, `mutating`, `depends_on`, and (legacy WA/VWA only)
++`llm_as_a_judge`; see [Filtering tasks](#filtering-tasks-static-task-facts).
+ 
+ ## Evaluation
+ 
+-Runs **only at episode end** (`terminate` / `response` / `max_steps`) via BrowserGym's per-benchmark evaluator. A VWA subset scores via an LLM judge (`llm_fuzzy_match`, default `gpt-4.1`) / image-caption model through the configured API route, so **WA/VWA require `OPENAI_API_KEY`** benchmark-wide — the upstream evaluator builds its client at import time, so a missing key makes *every* VWA `reset()` hard-fail (not just judged tasks), never a silent `0.0`. See [Setup](#setup).
++Runs **only at episode end** (`terminate` / `response` / `max_steps`) via BrowserGym's per-benchmark evaluator. WebArena-Verified records a Playwright trace and evaluates the model's schema-constrained final JSON with the official deterministic response/network evaluators. Its task reward is binary: every configured evaluator must pass for `1.0`; otherwise it is `0.0`. Legacy WA/VWA still use their existing LLM/image judge paths and require `OPENAI_API_KEY`. See [Setup](#setup).
+ 
+ ### Eval rigor (opt-in)
+ 
+@@ -229,6 +259,19 @@ scripts/configs/{qwen3_5,qwen3_vl}/default/browsergym.{miniwob,webarena,visualwe
+ 
+ VWA uses `mixed.yaml` (not `text_only.yaml`) because Qwen3.5-9B / Qwen3-VL are multimodal — the env surfaces the task's goal image(s) (single or multi) and they are shown on every turn so the model can ground "find this product" prompts even in text+AXTree mode (see [Goal images](#goal-images) below).
+ 
++WebArena-Verified provides `default.yaml`, `text_only.yaml`, and `som.yaml`
++for Qwen3.5/Qwen3-VL plus screenshot defaults for GPT and Claude. Its campaign
++runner performs the read/write split and selects either Full or Hard:
++
++```bash
++# Full (812 tasks)
++./devs/exps/eval/browsergym.webarena_verified/run.sh gpt-5.5
++
++# Official Hard subset (258 tasks)
++EVAL_TASK_SET=hard \
++  ./devs/exps/eval/browsergym.webarena_verified/run.sh gpt-5.5
++```
++
+ ## Filtering tasks (static task facts)
+ 
+ The env exposes **static, deploy-independent task facts** in `metadata.others`
+@@ -241,10 +284,11 @@ is merely cold-booting is retried via **503 + Retry-After**, not pre-excluded
+ 
+ | `others` key | Benches | Meaning |
+ |---|---|---|
+-| `sites` (`list[str]`) | WA / VWA | WA sites the task touches (`"shopping"`, `"map"`, `"gitlab"`, `"reddit"`, …). Static, from the task json. |
++| `sites` (`list[str]`) | WA / Verified / VWA | Sites the task touches (`"shopping"`, `"map"`, `"gitlab"`, `"reddit"`, …). Static, from the task json. |
+ | `llm_as_a_judge` (`bool`) | WA / VWA | `True` iff the evaluator uses `string_match.fuzzy_match` (needs an external LLM judge — cua-lite default `gpt-4.1` via `llm_judge_model`; upstream hard-codes `gpt-4-1106-preview`). Runs by default — reset hard-fails if `OPENAI_API_KEY` is unset (no silent reward-0). Static. |
+-| `mutating` (`bool`) | WA / VWA | `True` iff the task writes persisted backend state (`isolation.is_mutating`). Use this for the WA/VWA operator split described in [WA/VWA runtime](#wavwa-runtime). Static. |
+-| `depends_on` (`list[str]`) | WA / VWA | Curated run-order parents (BrowserGym metadata) — orders the write pass so an earlier writer's residue can't false-satisfy a later task. Static. |
++| `mutating` (`bool`) | WA / Verified / VWA | For Verified, exact `AgentResponseEvaluator.expected.task_type == "mutate"`; for WA/VWA, the existing isolation classification. Use for the read/write operator split. |
++| `hard` (`bool`) | Verified | Membership in the official 258-task Hard subset. |
++| `depends_on` (`list[str]`) | WA / Verified / VWA | Curated BrowserGym run-order parents when metadata is installed. |
+ 
+ VWA goal-image tasks (single or multi) are NOT excluded — see [Goal images](#goal-images). Filter at rollout time on the static facts:
+ 
+@@ -349,6 +393,14 @@ Please cite BrowserGym and the benchmark(s) you run alongside [CUA-Lite](/README
+   url       = {https://openreview.net/forum?id=oKn9c6ytLx}
+ }
+ 
++@inproceedings{hattami2025webarena,
++  title     = {WebArena Verified: Reliable Evaluation for Web Agents},
++  author    = {Amine El hattami and Megh Thakkar and Nicolas Chapados and Christopher Pal},
++  booktitle = {Workshop on Scaling Environments for Agents},
++  year      = {2025},
++  url       = {https://openreview.net/forum?id=94tlGxmqkN}
++}
++
+ @inproceedings{koh2024visualwebarena,
+   author    = {Jing Yu Koh and Robert Lo and Lawrence Jang and Vikram Duvvur and Ming Chong Lim and Po{-}Yu Huang and Graham Neubig and Shuyan Zhou and Russ Salakhutdinov and Daniel Fried},
+   title     = {VisualWebArena: Evaluating Multimodal Agents on Realistic Visual Web Tasks},
+diff --git a/lite/gym/envs/browsergym/isolation.py b/lite/gym/envs/browsergym/isolation.py
+index 489524a..ba5534b 100644
+--- a/lite/gym/envs/browsergym/isolation.py
++++ b/lite/gym/envs/browsergym/isolation.py
+@@ -1,7 +1,7 @@
+-"""Shared-backend isolation metadata for WA/VWA.
++"""Shared-backend isolation metadata for WebArena-family benchmarks.
+ 
+-WebArena / VisualWebArena back EVERY task with one shared, mutable docker
+-stack. The env-server's GENERIC conflict gate
++WebArena, WebArena-Verified, and VisualWebArena each back tasks with a shared,
++mutable site stack. The env-server's generic conflict gate
+ (:mod:`lite.gym.remote.conflict`) serializes writers per stack by reading
+ ``metadata.others["conflict_keys"]`` + ``metadata.others["mutating"]`` (an
+ opt-in, server-mode-only contract carried in ``others`` rather than typed
+@@ -69,17 +69,30 @@ def task_raw_config(benchmark: str, bgym_task_id: str) -> dict | None:
+     authoritative superset, carrying the ``intent`` + ``program_html`` url
+     the csv drops). The package is a hard dep of any WA/VWA task, so the
+     resource is guaranteed present whenever this is reached."""
+-    if benchmark not in ("webarena", "visualwebarena"):
++    if benchmark not in ("webarena", "webarena_verified", "visualwebarena"):
+         return None
+     if benchmark not in _RAW_CONFIG_CACHE:
+-        import importlib.resources as ir
+-        import json
+-        pkg, fn = (("webarena", "test.raw.json") if benchmark == "webarena"
+-                   else ("visualwebarena", "test_raw.json"))
+-        tasks = json.loads(ir.files(pkg).joinpath(fn).read_text())
+-        _RAW_CONFIG_CACHE[benchmark] = {
+-            f"{benchmark}.{t['task_id']}": t for t in tasks
+-        }
++        if benchmark == "webarena_verified":
++            from lite.gym.envs.browsergym import webarena_verified
++
++            _RAW_CONFIG_CACHE[benchmark] = {
++                task_id: record
++                for task_id, record in zip(
++                    webarena_verified.task_ids(),
++                    webarena_verified.task_records(),
++                    strict=True,
++                )
++            }
++        else:
++            import importlib.resources as ir
++            import json
++
++            pkg, fn = (("webarena", "test.raw.json") if benchmark == "webarena"
++                       else ("visualwebarena", "test_raw.json"))
++            tasks = json.loads(ir.files(pkg).joinpath(fn).read_text())
++            _RAW_CONFIG_CACHE[benchmark] = {
++                f"{benchmark}.{t['task_id']}": t for t in tasks
++            }
+     return _RAW_CONFIG_CACHE[benchmark].get(bgym_task_id)
+ 
+ 
+@@ -101,16 +114,29 @@ def task_depends_on(benchmark: str, bgym_task_id: str) -> list[str]:
+     place ``depends_on`` lives). Empty for miniwob / unknown id / if that optional
+     metadata package isn't installed (→ no curated ordering; writers fall back to
+     plain registration/task-id order)."""
+-    if benchmark not in ("webarena", "visualwebarena"):
++    if benchmark not in ("webarena", "webarena_verified", "visualwebarena"):
+         return []
+     if benchmark not in _DEPENDS_ON_CACHE:
+         table: dict[str, list[str]] = {}
+         try:
+             import csv
+-            import importlib.resources as ir
++            import importlib.util
+             import io
+-            txt = (ir.files("browsergym.experiments.benchmark.metadata")
+-                   .joinpath(f"{benchmark}.csv").read_text())
++
++            # Locate the namespace package without importing
++            # ``browsergym.experiments``: its ``__init__`` imports pandas even
++            # though this path needs only the packaged static CSV.
++            spec = importlib.util.find_spec("browsergym")
++            if spec is None or not spec.submodule_search_locations:
++                raise FileNotFoundError("browsergym package not installed")
++            csv_path = (
++                Path(next(iter(spec.submodule_search_locations)))
++                / "experiments"
++                / "benchmark"
++                / "metadata"
++                / f"{benchmark}.csv"
++            )
++            txt = csv_path.read_text()
+             for row in csv.DictReader(io.StringIO(txt)):
+                 table[row["task_name"]] = (row.get("depends_on") or "").split()
+         except Exception as e:  # noqa: BLE001 — optional metadata; degrade to no ordering
+@@ -222,7 +248,13 @@ def conflict_keys_and_mutating(
+     sites = config.get("sites") or []
+     if not any(s not in _STATIC_SITES for s in sites):
+         return (), False  # static-only → read-safe, no key
+-    return ("webarena",), is_mutating(config)
++    if benchmark == "webarena_verified":
++        from lite.gym.envs.browsergym import webarena_verified
++
++        mutating = webarena_verified.is_mutating(bgym_task_id)
++    else:
++        mutating = is_mutating(config)
++    return ("webarena",), mutating
+ 
+ 
+ async def restore_backend(env_id: str, key: str) -> None:
+diff --git a/lite/gym/envs/browsergym/main.py b/lite/gym/envs/browsergym/main.py
+index cbbd30d..0e068e6 100644
+--- a/lite/gym/envs/browsergym/main.py
++++ b/lite/gym/envs/browsergym/main.py
+@@ -1,7 +1,7 @@
+ """BrowserGym — CUA-Lite gym wrapper for BrowserGym benchmarks.
+ 
+-Wraps BrowserGym's web benchmarks (MiniWoB, WebArena, VisualWebArena) as
+-CUA-Lite gym environments using coordinate-based actions only, exposed
++Wraps BrowserGym's MiniWoB, WebArena, WebArena-Verified, and VisualWebArena
++benchmarks as CUA-Lite environments using coordinate-based actions, exposed
+ through LiteBrowserActionSpace ([0, 1000] coordinates).
+ 
+ BrowserGym provides the Playwright browser, task setup, and evaluation;
+@@ -12,6 +12,7 @@ Prerequisites:
+   - uv run --no-sync bash lite/gym/envs/browsergym/scripts/install.sh <benchmark>
+   - For MiniWoB: set MINIWOB_URL env var
+   - For WebArena: Docker services running + WA_* env vars
++  - For WebArena-Verified: official site stack running + WA_* env vars
+   - For VisualWebArena: Docker services + VWA_* env vars
+ 
+ Config: ``configs/default.yaml`` has ``env_kwargs: {}`` (every constructor field
+@@ -777,7 +778,7 @@ class BrowserGymConfig:
+ 
+     # BrowserGym task ID (gymnasium format, e.g. "miniwob.click-dialog")
+     bgym_task_id: str = ""
+-    # Benchmark name (e.g. "miniwob", "webarena")
++    # Benchmark name (e.g. "miniwob", "webarena", "webarena_verified")
+     benchmark: str = ""
+     # Viewport size (pixels) — determines coordinate conversion
+     viewport_width: int = 1920
+@@ -927,13 +928,14 @@ _BENCHMARK_VIEWPORTS: dict[str, tuple[int, int]] = {
+     #          (base.py:144 / core/observation.py) = 498×321 exactly (both
+     #          integers — no rounding). DO NOT "fix" this to 332×214 — that
+     #          breaks the ÷1.5 round-trip.
+-    # webarena/vwa: task viewport 1280×720, scale_factor 1.0 → (1280,720).
++    # webarena/verified/vwa: task viewport 1280×720, scale_factor 1.0 → (1280,720).
+     #          DO NOT "unify" these to 1920×1080 — the task hard-codes a 1280×720
+     #          viewport (webarena/task.py, visualwebarena/task.py) and we pass NO
+     #          viewport override, so the screenshot stays 1280×720; denormalizing
+     #          [0,1000] against 1920×1080 would scale every click ~1.5× off-page.
+     "miniwob": (498, 321),
+     "webarena": (1280, 720),
++    "webarena_verified": (1280, 720),
+     "visualwebarena": (1280, 720),
+ }
+ 
+@@ -1106,7 +1108,7 @@ class BrowserGymEnv(LiteBaseEnv):
+         # into a residue-immune read pass and a write pass — regardless of whether
+         # the env-server runs strict isolation. (Non-WA/VWA → no shared writable
+         # backend → key omitted; absent reads as falsy = non-mutating.)
+-        if benchmark in ("webarena", "visualwebarena"):
++        if benchmark in ("webarena", "webarena_verified", "visualwebarena"):
+             others[OTHERS_MUTATING] = mutating
+             # ``depends_on`` (BrowserGym's curated run-order parents) lets the
+             # rollout dispatch writers in topological order so the suite needs
+@@ -1117,6 +1119,10 @@ class BrowserGymEnv(LiteBaseEnv):
+                 # list(...): task_depends_on returns the module-cached list —
+                 # sever the registered/live others from it.
+                 others["depends_on"] = list(deps)
++        if benchmark == "webarena_verified":
++            from lite.gym.envs.browsergym import webarena_verified
++
++            others["hard"] = webarena_verified.is_hard(bgym_task_id)
+         conflict_keys, _gate_mutating = isolation.conflict_keys_and_mutating(
+             benchmark, bgym_task_id
+         )
+@@ -1228,6 +1234,14 @@ class BrowserGymEnv(LiteBaseEnv):
+                     "with_homepage_hint": self._config.with_homepage_hint,
+                     "with_na_hint": self._config.with_na_hint,
+                 }
++            elif self._config.benchmark == "webarena_verified":
++                # Import is deferred so catalog queries never trigger NLTK's
++                # tokenizer check/download. Scoring uses no legacy LLM judge.
++                _ensure_webarena_verified_imported()
++                _hint_kwargs = {
++                    "with_homepage_hint": self._config.with_homepage_hint,
++                    "with_na_hint": self._config.with_na_hint,
++                }
+             elif self._config.benchmark == "visualwebarena":
+                 # Deferred (torch-free import contract): the heavy
+                 # ``browsergym.visualwebarena`` import is done now, on first VWA
+@@ -1316,6 +1330,11 @@ class BrowserGymEnv(LiteBaseEnv):
+         # the latest real BrowserGym observation available after reset.
+         self._last_obs = obs
+         self._instruction = _extract_instruction(obs)
++        if self._config.benchmark == "webarena_verified":
++            # Project BrowserGym's native finish name onto Lite's canonical tool.
++            self._instruction = self._instruction.replace(
++                "`send_msg_to_user`", "`response`"
++            )
+         # Screenshot only when requested. Default (use_screenshot=True) keeps
+         # today's behavior; text-only configs (`use_screenshot=False, use_ax_tree=True`)
+         # null the PNG and rely on the AXTree text from _build_obs_text.
+@@ -1553,6 +1572,17 @@ class BrowserGymEnv(LiteBaseEnv):
+                 continue
+             if code:
+                 last_obs = await self._execute_bgym_action(code)
++                if (
++                    name == "type"
++                    and args.get("press_enter") is True
++                    and last_obs is not None
++                    and not last_obs.get("last_action_error")
++                ):
++                    # Each native call stays a single action even when
++                    # multiaction=False. The type slot owns its final frame.
++                    executed_actions.append({"call": code})
++                    code = 'keyboard_press("Enter")'
++                    last_obs = await self._execute_bgym_action(code)
+                 await record_action_frame(last_obs)
+                 last_result_call_id = result_call_id
+                 last_result_action_name = name
+@@ -1561,6 +1591,10 @@ class BrowserGymEnv(LiteBaseEnv):
+                     current_result_call_ids.add(result_call_id)
+                 executed_actions.append({"call": code})
+             elif name in ("wait", "screenshot", "cursor_position"):
++                if name == "wait":
++                    # _to_bgym_code validated the duration in seconds. Yield
++                    # while the page loads, then capture this action's frame.
++                    await asyncio.sleep(float(args.get("duration", 1.0)))
+                 # No bgym code, so no obs -- but these DID execute and owe a
+                 # frame. Read the page directly: no ``env.step``, so no step
+                 # counter or reward side effect. ``_render_feedback_frame``
+@@ -1620,6 +1654,12 @@ class BrowserGymEnv(LiteBaseEnv):
+         # Extract reward from last BrowserGym step result
+         if last_obs is not None:
+             reward = last_obs.get("reward")
++            if self._config.benchmark == "webarena_verified" and reward is not None:
++                # webarena-verified's canonical TaskEvalResult is all-or-nothing:
++                # every evaluator must score 1.0. BrowserGym 0.14.3 instead
++                # returns their mean, so project partial values back onto the
++                # benchmark's official binary task score at this boundary.
++                reward = 1.0 if reward == 1.0 else 0.0
+         elif bgym_action_attempted and self._last_action_execution_error:
+             record_tool_execution_error(
+                 action_errors,
+@@ -2074,7 +2114,7 @@ class BrowserGymEnv(LiteBaseEnv):
+ 
+         if name == "wait":
+             coerce_model_duration(args.get("duration", 1.0), action_name="wait")
+-            return None  # no bgym code; the loop frames it directly
++            return None  # step waits asynchronously before capturing the frame
+ 
+         if name in ("screenshot", "cursor_position"):
+             return None  # no bgym code; the loop frames it directly
+@@ -2142,10 +2182,22 @@ _DEFAULT_ENV_VARS: dict[str, dict[str, str]] = {
+         "VWA_CLASSIFIEDS_RESET_TOKEN": _CLASSIFIEDS_RESET_TOKEN,
+     },
+ }
++# Verified uses the same WA_* variable names, but its corrected site images are
++# operator-managed. It must never fall back to the legacy localhost stack.
++_DEFAULT_ENV_VARS["webarena_verified"] = {}
+ 
+ _REQUIRED_ENV_VARS: dict[str, list[str]] = {
+     bench: list(defaults.keys()) for bench, defaults in _DEFAULT_ENV_VARS.items()
+ }
++_REQUIRED_ENV_VARS["webarena_verified"] = [
++    "WA_SHOPPING",
++    "WA_SHOPPING_ADMIN",
++    "WA_REDDIT",
++    "WA_GITLAB",
++    "WA_WIKIPEDIA",
++    "WA_MAP",
++    "WA_HOMEPAGE",
++]
+ # WA/VWA score their ``fuzzy_match`` tasks with an LLM judge (``llm_judge_model``
+ # via OPENAI_API_KEY + OPENAI_BASE_URL). Require the key up-front so a missing judge
+ # HARD-FAILS at reset (the task ERRs and is retried via --max-attempts) instead of
+@@ -2258,7 +2310,12 @@ _WA_SITE_SPECS: list[tuple[str, str, int, str | None, tuple[int, ...]]] = [
+ ]
+ 
+ 
+-def _wa_site_up(url: str, needle: str | None, ok_codes: tuple[int, ...]) -> bool:
++def _wa_site_up(
++    url: str,
++    needle: str | None,
++    ok_codes: tuple[int, ...],
++    headers: dict[str, str] | None = None,
++) -> bool:
+     """One WA site is up iff it answers with an acceptable code (and, if given, the
+     needle is in the body). ``_NoRedirectHandler`` turns a 3xx into an ``HTTPError``,
+     so gitlab's ready-state 302 surfaces there — accept it only when ``ok_codes``
+@@ -2267,7 +2324,9 @@ def _wa_site_up(url: str, needle: str | None, ok_codes: tuple[int, ...]) -> bool
+     import urllib.request
+     opener = urllib.request.build_opener(_NoRedirectHandler())
+     try:
+-        with opener.open(urllib.request.Request(url), timeout=3) as r:
++        with opener.open(
++            urllib.request.Request(url, headers=headers or {}), timeout=3
++        ) as r:
+             if r.status not in ok_codes:
+                 return False
+             if needle:
+@@ -2293,10 +2352,53 @@ def _wa_stack_up(benchmark: str) -> bool:
+     return True
+ 
+ 
++_WEBARENA_VERIFIED_SITE_VARS: tuple[tuple[str, str, str | None], ...] = (
++    ("shopping", "WA_SHOPPING", "One Stop Market"),
++    ("shopping_admin", "WA_SHOPPING_ADMIN", None),
++    ("reddit", "WA_REDDIT", None),
++    ("gitlab", "WA_GITLAB", None),
++    ("wikipedia", "WA_WIKIPEDIA", None),
++    ("map", "WA_MAP", None),
++    ("homepage", "WA_HOMEPAGE", None),
++)
++
++
++def _webarena_verified_probe_headers() -> dict[str, str]:
++    """Read the optional Playwright headers for authenticated site probes."""
++    path = os.environ.get("PW_EXTRA_HEADERS")
++    if not path:
++        return {}
++    try:
++        headers = json.loads(Path(path).read_text())
++    except (OSError, json.JSONDecodeError) as e:
++        logger.warning("Cannot read PW_EXTRA_HEADERS for Verified probes: %s", e)
++        return {}
++    if not isinstance(headers, dict) or not all(
++        isinstance(key, str) and isinstance(value, str)
++        for key, value in headers.items()
++    ):
++        logger.warning("PW_EXTRA_HEADERS must be a JSON object of string headers")
++        return {}
++    return headers
++
++
++def _webarena_verified_down_sites() -> list[str]:
++    """Return official Verified sites that are not reachable via WA_* URLs."""
++    headers = _webarena_verified_probe_headers()
++    return [
++        name
++        for name, env_var, needle in _WEBARENA_VERIFIED_SITE_VARS
++        if not os.environ.get(env_var)
++        or not _wa_site_up(os.environ[env_var], needle, (200, 302), headers)
++    ]
++
++
+ def _wa_down_sites(benchmark: str) -> list[str]:
+     """Names of the WA/VWA local sites NOT yet serving — for a clear ``warming: …``
+     503 message so a rollout's error.txt says *which* site is cold (almost always
+     ``gitlab``, the slow long pole) instead of a vague timeout."""
++    if benchmark == "webarena_verified":
++        return _webarena_verified_down_sites()
+     import os as _os
+     down = [
+         name
+@@ -2314,6 +2416,8 @@ def _service_up(benchmark: str) -> bool:
+     """Readiness probe for a benchmark's backend(s). WA/VWA → the full local-stack
+     check (:func:`_wa_stack_up`); miniwob → its single needle probe. ``True`` for an
+     unknown/probe-less benchmark."""
++    if benchmark == "webarena_verified":
++        return not _webarena_verified_down_sites()
+     if benchmark in ("webarena", "visualwebarena"):
+         return _wa_stack_up(benchmark)
+     specs = _PROBE_SPECS.get(benchmark, [])
+@@ -2864,6 +2968,27 @@ def _ensure_services(env_id: str) -> None:
+         _ensure_miniwob_singleton()
+         _services_started.add(benchmark)
+         return
++    if benchmark == "webarena_verified":
++        # Verified images carry benchmark-specific fixes and are managed by the
++        # operator. Probe them, but never start/stop old WebArena containers.
++        _check_env_vars(benchmark)
++        down = _webarena_verified_down_sites()
++        if down:
++            from lite.gym.errors import EnvDepsMissingError
++
++            raise EnvDepsMissingError(
++                what=(
++                    "browsergym.webarena_verified official site stack is not "
++                    f"reachable: {', '.join(down)}"
++                ),
++                install=(
++                    "start the pinned WebArena-Verified site images and set "
++                    "WA_* URLs; see lite/gym/envs/browsergym/README.md"
++                ),
++                see="lite/gym/envs/browsergym/README.md",
++            )
++        _services_started.add(benchmark)
++        return
+     if benchmark in ("webarena", "visualwebarena"):
+         # Auto-pick free host ports for the WA/VWA stack + set the in-process
+         # WA_*/VWA_* base_urls so this env-server's Python client and its start.sh
+@@ -3089,7 +3214,7 @@ def _escape(text: str) -> str:
+ # ---------------------------------------------------------------------------
+ 
+ def _wa_vwa_task_facts(benchmark: str, bgym_task_id: str) -> tuple[list[str], bool, bool]:
+-    """Return STATIC, hardware-independent facts about a WA/VWA task, surfaced
++    """Return static facts about a WebArena-family task, surfaced
+     into ``metadata.others`` so callers compose their OWN runtime filters:
+ 
+       * ``sites`` (``list[str]``) — the WebArena sites the task touches
+@@ -3126,15 +3251,21 @@ def _wa_vwa_task_facts(benchmark: str, bgym_task_id: str) -> tuple[list[str], bo
+ 
+     Tasks not found in the raw json (e.g. train split, ID drift) → ([], False, False).
+     """
+-    if benchmark not in ("webarena", "visualwebarena"):
++    if benchmark not in ("webarena", "webarena_verified", "visualwebarena"):
+         return [], False, False
+     t = isolation.task_raw_config(benchmark, bgym_task_id)
+     if t is None:
+         return [], False, False
+     sites = sorted(t.get("sites") or [])
+-    e = t.get("eval", {}) or {}
+-    llm_judge = "fuzzy_match" in (e.get("reference_answers") or {})
+-    mutating = isolation.is_mutating(t)
++    if benchmark == "webarena_verified":
++        from lite.gym.envs.browsergym import webarena_verified
++
++        llm_judge = False
++        mutating = webarena_verified.is_mutating(bgym_task_id)
++    else:
++        e = t.get("eval", {}) or {}
++        llm_judge = "fuzzy_match" in (e.get("reference_answers") or {})
++        mutating = isolation.is_mutating(t)
+     return sites, llm_judge, mutating
+ 
+ 
+@@ -3271,6 +3402,28 @@ def _load_tasks() -> None:
+     except Exception as e:
+         logger.warning("Failed to register WebArena tasks: %s", e)
+ 
++    # --- WebArena-Verified ---
++    # Read the pinned official dataset without importing its BrowserGym package:
++    # that import performs an NLTK tokenizer check. Defer it to first reset.
++    try:
++        from lite.gym.envs.browsergym import webarena_verified
++
++        webarena_verified.browsergym_package_root()
++        task_ids = list(webarena_verified.task_ids())
++        _register_benchmark(
++            "webarena_verified",
++            task_ids,
++            split="eval",
++            max_steps=30,
++            action_subsets=_SUBSETS_WITH_TAB,
++        )
++        logger.debug("Registered %d WebArena-Verified tasks", len(task_ids))
++    except (FileNotFoundError, ModuleNotFoundError):
++        logger.debug(
++            "Skipping WebArena-Verified "
++            "(browsergym.webarena_verified or webarena-verified not installed)"
++        )
++
+     # --- VisualWebArena ---
+     # IMPORTANT: do NOT ``import browsergym.visualwebarena`` here. Its package
+     # ``__init__`` imports the ``visualwebarena`` submodule whose body pulls in
+@@ -3341,6 +3494,8 @@ def _vwa_config_task_ids() -> list[str]:
+ 
+ _VWA_IMPORTED = False
+ _VWA_IMPORT_LOCK = threading.Lock()
++_WEBARENA_VERIFIED_IMPORTED = False
++_WEBARENA_VERIFIED_IMPORT_LOCK = threading.Lock()
+ _JUDGE_OVERRIDE_LOCK = threading.Lock()
+ # One shared BLIP-2 caption model per process (see _patch_vwa_captioning): keyed
+ # by (model_name, device, dtype), guarded by the lock so the (thread-unsafe) load
+@@ -3349,6 +3504,23 @@ _CAPTIONING_LOCK = threading.Lock()
+ _CAPTIONING_FN_CACHE: dict[tuple[str, str, str], Any] = {}
+ 
+ 
++def _ensure_webarena_verified_imported() -> None:
++    """Import the official BrowserGym integration once, on first reset."""
++    global _WEBARENA_VERIFIED_IMPORTED
++    if _WEBARENA_VERIFIED_IMPORTED:
++        return
++    with _WEBARENA_VERIFIED_IMPORT_LOCK:
++        if _WEBARENA_VERIFIED_IMPORTED:
++            return
++        import browsergym.webarena_verified  # noqa: F401
++
++        from lite.gym.envs.browsergym import webarena_verified
++
++        webarena_verified.install_playwright_trace_loader()
++
++        _WEBARENA_VERIFIED_IMPORTED = True
++
++
+ def _ensure_visualwebarena_imported() -> None:
+     """Eagerly import ``browsergym.visualwebarena`` on the first VWA reset.
+ 
+@@ -3661,7 +3833,11 @@ class BrowserGymServices(EnvServices):
+             from lite.gym.errors import EnvDepsMissingError
+             raise EnvDepsMissingError(
+                 what=f"browsergym {benchmark} backend not serving (stack cold/unreachable)",
+-                install=f"bash lite/gym/envs/browsergym/scripts/start.sh {benchmark}",
++                install=(
++                    "start the official site stack and set WA_* URLs"
++                    if benchmark == "webarena_verified"
++                    else f"bash lite/gym/envs/browsergym/scripts/start.sh {benchmark}"
++                ),
+                 see="lite/gym/envs/browsergym/README.md",
+             )
+ 
+diff --git a/lite/gym/envs/browsergym/scripts/install.sh b/lite/gym/envs/browsergym/scripts/install.sh
+index 2aeb963..e93a669 100755
+--- a/lite/gym/envs/browsergym/scripts/install.sh
++++ b/lite/gym/envs/browsergym/scripts/install.sh
+@@ -10,6 +10,8 @@
+ #   webarena         — Shopping, Shopping Admin, Forum, GitLab, Wikipedia images
+ #                      + OpenStreetMap assets + webarena-homepage Flask source
+ #                      (for tasks that reference __HOMEPAGE__)
++#   webarena_verified — pinned deterministic evaluator + BrowserGym integration;
++#                       official site images are operator-managed
+ #   visualwebarena   — all webarena images + OpenStreetMap assets +
+ #                      Classifieds zip + homepage Flask source (image-goal
+ #                      tasks resolve __HOMEPAGE__/static/...)
+@@ -265,6 +267,7 @@ install_miniwob() {
+ 
+ # ─── Python deps ─────────────────────────────────────────────────────────────
+ install_python_deps() {
++    local benchmark="$1"
+     echo "Installing Python dependencies..."
+     # Pin browsergym to an EXACT version (not a `>=` floor) for reproducibility —
+     # matches the convention of the other container envs (osworld pins an exact
+@@ -300,8 +303,30 @@ install_python_deps() {
+     # webarena evaluator uses it for fuzzy string matching). Lift this cap once
+     # upstream scopes the check to the cwd sys.path entry.
+     require_uv
+-    uv pip install -q --override "$ENV_DIR/overrides.txt" \
+-        "browsergym==0.14.3" "flask>=2.0" "nltk<3.10.1"
++    if [ "$benchmark" = "webarena_verified" ]; then
++        # Keep Verified independent from the browsergym meta-package: install
++        # its WebArena base explicitly, without also pulling VisualWebArena and
++        # its Torch/CUDA stack. browsergym-webarena-verified imports
++        # browsergym.webarena.task but does not declare that runtime dependency.
++        uv pip install -q --override "$ENV_DIR/overrides.txt" \
++            "browsergym-core==0.14.3" \
++            "browsergym-experiments==0.14.3" \
++            "browsergym-webarena==0.14.3" \
++            "browsergym-webarena-verified==0.14.3" \
++            "webarena-verified==1.2.3" \
++            "nltk<3.10.1"
++    else
++        uv pip install -q --override "$ENV_DIR/overrides.txt" \
++            "browsergym==0.14.3" "flask>=2.0" "nltk<3.10.1"
++    fi
++    # browsergym.webarena_verified checks this tokenizer at import and otherwise
++    # attempts a runtime download. Install it here so task reset stays offline.
++    python -m nltk.downloader -q punkt_tab
++    if [ "$benchmark" = "webarena_verified" ]; then
++        # Execute the real integration import: locating the Verified package is
++        # insufficient because its module body imports browsergym.webarena.
++        python -c "import browsergym.webarena_verified"
++    fi
+ }
+ 
+ # BrowserGym drives WA/VWA/MiniWoB pages via Playwright on THIS host (the browser
+@@ -339,6 +364,7 @@ Usage: $0 <benchmark>
+ 
+ Benchmarks:
+   webarena         install webarena Docker images + OpenStreetMap assets
++  webarena_verified install pinned evaluator/runtime dependencies; site images are external
+   visualwebarena   install webarena images + OpenStreetMap assets + classifieds zip
+   miniwob          clone miniwob-plusplus for local self-serving
+ USAGE
+@@ -346,14 +372,20 @@ USAGE
+ 
+ case "${1:-}" in
+     webarena)
+-        install_python_deps
++        install_python_deps webarena
+         install_playwright_browser
+         install_webarena_images
+         install_map_assets
+         install_homepage
+         ;;
++    webarena_verified)
++        install_python_deps webarena_verified
++        install_playwright_browser
++        echo "WebArena-Verified dependencies installed."
++        echo "Start the official pinned site images and configure WA_* URLs; see $ENV_DIR/README.md."
++        ;;
+     visualwebarena)
+-        install_python_deps
++        install_python_deps visualwebarena
+         install_playwright_browser
+         install_webarena_images
+         install_map_assets
+@@ -361,7 +393,7 @@ case "${1:-}" in
+         install_homepage
+         ;;
+     miniwob)
+-        install_python_deps
++        install_python_deps miniwob
+         install_playwright_browser
+         install_miniwob
+         ;;
+diff --git a/tests/gym/envs/browsergym/test_browsergym_actions.py b/tests/gym/envs/browsergym/test_browsergym_actions.py
+index 1ba51b6..2747b71 100644
+--- a/tests/gym/envs/browsergym/test_browsergym_actions.py
++++ b/tests/gym/envs/browsergym/test_browsergym_actions.py
+@@ -2,13 +2,17 @@
+ 
+ from __future__ import annotations
+ 
++import asyncio
+ import os
+-from unittest.mock import patch
++import threading
++from types import SimpleNamespace
++from unittest.mock import AsyncMock, patch
+ 
+ import pytest
+ 
+ pytest.importorskip("browsergym.core", reason="browsergym not installed")
+ 
++from lite.core.tools.calls import make_tool_call
+ from lite.core.tools.extra_tools import LiteBrowserNavToolSet
+ from lite.core.tools.schemas import tool_schema_name, tool_schema_parameters
+ from lite.gym.envs.browsergym.main import (
+@@ -20,7 +24,7 @@ from lite.gym.envs.browsergym.main import (
+     _tool_schema_from_signature,
+     _tools_for_subsets,
+ )
+-from tests.gym.envs.browsergym._support import _make_fake
++from tests.gym.envs.browsergym._support import _fake_bgym_step_obs, _make_fake, _png_bytes
+ 
+ # ---------------------------------------------------------------------------
+ # Action surface introspection
+@@ -373,7 +377,7 @@ class TestActionTranslation:
+             self._translate("goto", {"url": "https://example.com"}) == "goto('https://example.com')"
+         )
+ 
+-    def test_wait_noop(self):
++    def test_wait_has_no_browsergym_code(self):
+         assert self._translate("wait", {"duration": 1.0}) is None
+ 
+     def test_screenshot_noop(self):
+@@ -405,6 +409,179 @@ class TestActionTranslation:
+         assert "'a47'" in code
+ 
+ 
++class TestTypeExecution:
++    @pytest.mark.asyncio
++    @pytest.mark.parametrize(
++        "arguments", [{"press_enter": True}, {"press_enter": False}, {"press_enter": None}, {}],
++    )
++    async def test_type_executes_optional_enter_as_single_native_calls(
++        self, arguments, monkeypatch,
++    ):
++        from browsergym.core.action.base import execute_python_code
++        from browsergym.core.action.highlevel import HighLevelActionSet
++
++        env = _make_fake(cursor=False, multiaction=False)
++        try:
++            await env.reset()
++            action_set = HighLevelActionSet(subsets=["coord"], multiaction=False, strict=True)
++            native_calls = []
++            keyboard_events = []
++            backend_threads = []
++            frames = [_png_bytes(4, 4), _png_bytes(5, 5)]
++            page = SimpleNamespace(keyboard=SimpleNamespace(
++                type=lambda text, delay: keyboard_events.append(("type", text)),
++                press=lambda key: keyboard_events.append(("press", key)),
++            ))
++
++            def backend_step(code):
++                backend_threads.append(threading.get_ident())
++                native_calls.append(code)
++                execute_python_code(action_set.to_python_code(code), page, None, None)
++                obs = _fake_bgym_step_obs(screenshot=frames[len(native_calls) - 1])
++                return obs, 0.0, False, False, {}
++
++            env._env = SimpleNamespace(step=backend_step)
++            monkeypatch.setattr("lite.gym.envs.browsergym.main._with_playwright", lambda fn: fn())
++            result = await env.step([
++                make_tool_call("computer", {"actions": [{"action": "type", "text": "technology",
++                                                         **arguments}]}, call_id="call_type"),
++            ])
++
++            expected_calls = ['keyboard_type("technology")']
++            expected_events = [("type", "technology")]
++            if arguments.get("press_enter") is True:
++                expected_calls.append('keyboard_press("Enter")')
++                expected_events.append(("press", "Enter"))
++            assert native_calls == expected_calls
++            assert keyboard_events == expected_events
++            assert all(t != threading.get_ident() for t in backend_threads)
++            assert result.info["executed_actions"] == [{"call": c} for c in expected_calls]
++            assert len(result.results) == 1
++            assert result.results[0].tool_call_id == "call_type"
++            assert result.results[0].images == [frames[len(expected_calls) - 1]]
++            assert result.results[0].error is None
++            assert env._step_count == 1
++        finally:
++            env._env = None
++            await env.close()
++
++    @pytest.mark.asyncio
++    @pytest.mark.parametrize("typing_result", [None, {"last_action_error": "typing failed"}])
++    async def test_typing_failure_does_not_send_enter(self, typing_result):
++        env = _make_fake(use_screenshot=False)
++        try:
++            await env.reset()
++
++            async def execute(code):
++                if typing_result is None:
++                    env._last_action_execution_error = "typing failed"
++                return typing_result
++
++            env._execute_bgym_action = AsyncMock(side_effect=execute)
++            result = await env.step([
++                make_tool_call("computer", {"actions": [{"action": "type", "text": "technology",
++                                                         "press_enter": True}]},
++                               call_id="call_type"),
++            ])
++
++            env._execute_bgym_action.assert_awaited_once_with('keyboard_type("technology")')
++            assert result.info["executed_actions"] == [{"call": 'keyboard_type("technology")'}]
++            assert result.results[0].tool_call_id == "call_type"
++            assert result.results[0].metadata == {"is_error": True}
++            assert result.results[0].error == "type failed: execution failed"
++        finally:
++            await env.close()
++
++    @pytest.mark.asyncio
++    async def test_enter_failure_is_visible_under_the_type_call_id(self):
++        env = _make_fake(use_screenshot=False)
++        try:
++            await env.reset()
++            env._execute_bgym_action = AsyncMock(side_effect=[
++                _fake_bgym_step_obs(), {"last_action_error": "Enter failed"},
++            ])
++            result = await env.step([
++                make_tool_call("computer", {"actions": [{"action": "type", "text": "technology",
++                                                         "press_enter": True}]},
++                               call_id="call_type"),
++            ])
++
++            assert env._execute_bgym_action.await_count == 2
++            assert result.results[0].tool_call_id == "call_type"
++            assert result.results[0].metadata == {"is_error": True}
++            assert result.results[0].error == "type failed: execution failed"
++            assert env._step_count == 1
++        finally:
++            await env.close()
++
++
++class TestWaitExecution:
++    @pytest.mark.asyncio
++    @pytest.mark.parametrize(
++        ("arguments", "seconds"),
++        [({"duration": 2.5}, 2.5), ({}, 1.0), ({"duration": 0}, 0.0)],
++    )
++    async def test_wait_finishes_before_its_frame(self, arguments, seconds, monkeypatch):
++        env = _make_fake(cursor=False)
++        try:
++            await env.reset()
++            env._env = SimpleNamespace()
++            env._execute_bgym_action = AsyncMock()
++            events = []
++            real_sleep = asyncio.sleep
++            frame = _png_bytes()
++
++            async def sleep(duration):
++                events.append(("wait_started", duration))
++                await real_sleep(0)
++                events.append(("wait_finished", duration))
++
++            async def screenshot():
++                events.append(("frame", None))
++                return frame
++
++            sleeper = AsyncMock(side_effect=sleep)
++            monkeypatch.setattr("lite.gym.envs.browsergym.main.asyncio.sleep", sleeper)
++            env._take_screenshot = AsyncMock(side_effect=screenshot)
++            result = await env.step([
++                make_tool_call("computer", {"actions": [{"action": "wait", **arguments}]},
++                               call_id="call_wait"),
++            ])
++
++            sleeper.assert_awaited_once_with(seconds)
++            assert events == [
++                ("wait_started", seconds), ("wait_finished", seconds), ("frame", None),
++            ]
++            assert result.results[0].images == [frame]
++            assert result.results[0].error is None
++            env._execute_bgym_action.assert_not_awaited()
++        finally:
++            env._env = None
++            await env.close()
++
++    @pytest.mark.asyncio
++    @pytest.mark.parametrize("duration", [-1, 31, True, float("nan")])
++    async def test_invalid_wait_is_visible_to_model_without_sleep(self, duration, monkeypatch):
++        env = _make_fake(cursor=False)
++        try:
++            await env.reset()
++            env._execute_bgym_action = AsyncMock()
++            sleeper = AsyncMock()
++            monkeypatch.setattr("lite.gym.envs.browsergym.main.asyncio.sleep", sleeper)
++            result = await env.step([
++                make_tool_call("computer", {"actions": [{"action": "wait", "duration": duration}]},
++                               call_id="call_wait"),
++            ])
++
++            sleeper.assert_not_awaited()
++            env._execute_bgym_action.assert_not_awaited()
++            assert result.results[0].tool_call_id == "call_wait"
++            assert "wait.duration" in result.results[0].error
++            assert result.results[0].metadata == {"is_error": True}
++        finally:
++            await env.close()
++
++
+ # ---------------------------------------------------------------------------
+ # Config defaults
+ # ---------------------------------------------------------------------------
+diff --git a/tests/gym/envs/browsergym/test_browsergym_health.py b/tests/gym/envs/browsergym/test_browsergym_health.py
+index 77502c3..4d9174c 100644
+--- a/tests/gym/envs/browsergym/test_browsergym_health.py
++++ b/tests/gym/envs/browsergym/test_browsergym_health.py
+@@ -6,6 +6,8 @@ Run: uv run pytest tests/gym/envs/browsergym/test_browsergym_health.py -q
+ """
+ from __future__ import annotations
+ 
++import os
++
+ import pytest
+ 
+ pytest.importorskip("browsergym.core", reason="browsergym not installed")
+@@ -114,3 +116,81 @@ def test_vwa_down_sites_includes_classifieds(monkeypatch):
+     assert bg._wa_down_sites("visualwebarena") == ["classifieds"]
+     # webarena (no classifieds dependency) is fully up in the same state
+     assert bg._wa_down_sites("webarena") == []
++
++
++def test_verified_requires_operator_urls_without_legacy_defaults():
++    required = set(bg._REQUIRED_ENV_VARS["webarena_verified"])
++    assert bg._DEFAULT_ENV_VARS["webarena_verified"] == {}
++    assert required == {
++        "WA_SHOPPING",
++        "WA_SHOPPING_ADMIN",
++        "WA_REDDIT",
++        "WA_GITLAB",
++        "WA_WIKIPEDIA",
++        "WA_MAP",
++        "WA_HOMEPAGE",
++    }
++    assert "OPENAI_API_KEY" not in required
++
++
++def test_verified_missing_urls_fail_without_populating_legacy_defaults(monkeypatch):
++    for name in bg._REQUIRED_ENV_VARS["webarena_verified"]:
++        monkeypatch.delenv(name, raising=False)
++
++    with pytest.raises(OSError, match="WA_SHOPPING"):
++        bg._check_env_vars("webarena_verified")
++
++    assert "WA_SHOPPING" not in os.environ
++
++
++def test_verified_probe_uses_all_operator_urls(monkeypatch):
++    expected_urls = set()
++    for site, env_var, _needle in bg._WEBARENA_VERIFIED_SITE_VARS:
++        url = f"https://verified.example/{site}"
++        monkeypatch.setenv(env_var, url)
++        expected_urls.add(url)
++    seen = []
++    monkeypatch.setattr(
++        bg,
++        "_wa_site_up",
++        lambda url, needle, ok_codes, headers: seen.append((url, headers)) or True,
++    )
++
++    assert bg._webarena_verified_down_sites() == []
++    assert {url for url, _headers in seen} == expected_urls
++
++
++def test_verified_probe_forwards_playwright_headers(tmp_path, monkeypatch):
++    headers_path = tmp_path / "headers.json"
++    headers_path.write_text('{"x-site-token": "secret"}')
++    monkeypatch.setenv("PW_EXTRA_HEADERS", str(headers_path))
++    for site, env_var, _needle in bg._WEBARENA_VERIFIED_SITE_VARS:
++        monkeypatch.setenv(env_var, f"https://verified.example/{site}")
++    seen = []
++    monkeypatch.setattr(
++        bg,
++        "_wa_site_up",
++        lambda url, needle, ok_codes, headers: seen.append(headers) or True,
++    )
++
++    assert bg._webarena_verified_down_sites() == []
++    assert seen and all(headers == {"x-site-token": "secret"} for headers in seen)
++
++
++def test_verified_ensure_never_invokes_legacy_start_script(monkeypatch):
++    for site, env_var, _needle in bg._WEBARENA_VERIFIED_SITE_VARS:
++        monkeypatch.setenv(env_var, f"https://verified.example/{site}")
++    monkeypatch.setattr(bg, "_webarena_verified_down_sites", lambda: [])
++    monkeypatch.setattr(
++        bg.subprocess,
++        "run",
++        lambda *args, **kwargs: (_ for _ in ()).throw(
++            AssertionError("Verified must not invoke start.sh")
++        ),
++    )
++    bg._services_started.discard("webarena_verified")
++
++    bg._ensure_services("browsergym.webarena_verified")
++
++    assert "webarena_verified" in bg._services_started
++    bg._services_started.discard("webarena_verified")
+diff --git a/tests/gym/envs/browsergym/test_browsergym_isolation.py b/tests/gym/envs/browsergym/test_browsergym_isolation.py
+index a0f5e77..d5eccef 100644
+--- a/tests/gym/envs/browsergym/test_browsergym_isolation.py
++++ b/tests/gym/envs/browsergym/test_browsergym_isolation.py
+@@ -32,11 +32,13 @@ class TestWaVwaTaskFacts:
+         from lite.gym.envs.browsergym import isolation
+ 
+         isolation._RAW_CONFIG_CACHE.clear()
++        isolation._DEPENDS_ON_CACHE.clear()
+ 
+     def teardown_method(self):
+         from lite.gym.envs.browsergym import isolation
+ 
+         isolation._RAW_CONFIG_CACHE.clear()
++        isolation._DEPENDS_ON_CACHE.clear()
+ 
+     def _seed_cache(self, benchmark: str, tasks: dict[str, dict]) -> None:
+         """Bypass the disk JSON load by pre-populating the shared cache
+@@ -159,6 +161,64 @@ class TestWaVwaTaskFacts:
+         )
+         assert _wa_vwa_task_facts("webarena", "webarena.99") == (["map"], True, False)
+ 
++    def test_verified_uses_official_mutation_type_without_llm_judge(self, monkeypatch):
++        from lite.gym.envs.browsergym import webarena_verified
++
++        task_id = "webarena_verified.303.44.2"
++        self._seed_cache(
++            "webarena_verified",
++            {
++                task_id: {
++                    "sites": ["gitlab"],
++                    "intent": "Create a repository",
++                    "eval": [
++                        {
++                            "evaluator": "AgentResponseEvaluator",
++                            "expected": {"task_type": "mutate"},
++                        }
++                    ],
++                }
++            },
++        )
++        monkeypatch.setattr(
++            webarena_verified,
++            "is_mutating",
++            lambda candidate: candidate == task_id,
++        )
++
++        assert _wa_vwa_task_facts("webarena_verified", task_id) == (
++            ["gitlab"],
++            False,
++            True,
++        )
++
++    def test_verified_metadata_surfaces_hard_and_dependency_facts(self, monkeypatch):
++        from lite.gym.envs.browsergym import isolation, webarena_verified
++        from lite.gym.envs.browsergym.main import BrowserGymEnv
++
++        task_id = "webarena_verified.303.44.2"
++        parent = "webarena_verified.285.43.2"
++        self._seed_cache(
++            "webarena_verified",
++            {task_id: {"sites": ["gitlab"], "intent": "Create", "eval": []}},
++        )
++        isolation._DEPENDS_ON_CACHE["webarena_verified"] = {task_id: [parent]}
++        monkeypatch.setattr(webarena_verified, "is_mutating", lambda candidate: True)
++        monkeypatch.setattr(webarena_verified, "is_hard", lambda candidate: True)
++
++        metadata = BrowserGymEnv._task_metadata(
++            "webarena_verified",
++            task_id,
++            action_subsets=("coord", "chat"),
++            viewport=(1280, 720),
++        )
++
++        assert metadata.others["sites"] == ["gitlab"]
++        assert metadata.others["mutating"] is True
++        assert metadata.others["hard"] is True
++        assert metadata.others["depends_on"] == [parent]
++        assert "llm_as_a_judge" not in metadata.others
++
+ 
+ # ---------------------------------------------------------------------------
+ # depends_on ingestion (topological run-order for the strict-isolation flow)
+@@ -195,11 +255,15 @@ class TestTaskDependsOn:
+ 
+     def test_real_csv_loads(self):
+         # Integration: the bundled BrowserGym experiments metadata CSV resolves
+-        # via importlib.resources and parses (webarena.1 → its curated parent).
++        # without importing its pandas-dependent package and parses both task
++        # families (task 1 → its curated task-0 parent).
+         from lite.gym.envs.browsergym import isolation
+ 
+         isolation._DEPENDS_ON_CACHE.clear()
+         assert isolation.task_depends_on("webarena", "webarena.1") == ["webarena.0"]
++        assert isolation.task_depends_on(
++            "webarena_verified", "webarena_verified.279.1.2"
++        ) == ["webarena_verified.279.0.2"]
+ 
+ 
+ # ---------------------------------------------------------------------------
+diff --git a/tests/gym/envs/browsergym/test_browsergym_registration.py b/tests/gym/envs/browsergym/test_browsergym_registration.py
+index d0dc2fb..6cb6730 100644
+--- a/tests/gym/envs/browsergym/test_browsergym_registration.py
++++ b/tests/gym/envs/browsergym/test_browsergym_registration.py
+@@ -13,6 +13,7 @@ pytest.importorskip("browsergym.core", reason="browsergym not installed")
+ from lite.core.tools import make_tool_call
+ from lite.gym.envs.browsergym.main import (
+     _BENCHMARK_VIEWPORTS,
++    BrowserGymConfig,
+     BrowserGymEnv,
+ )
+ 
+@@ -181,5 +182,61 @@ class TestRegistration:
+ 
+     def test_benchmark_viewports_complete(self):
+         # Sanity: viewport map covers all benchmarks we register.
+-        for bench in ("miniwob", "webarena", "visualwebarena"):
++        for bench in (
++            "miniwob", "webarena", "webarena_verified", "visualwebarena"
++        ):
+             assert bench in _BENCHMARK_VIEWPORTS
++
++    def test_webarena_verified_catalog_and_metadata_registered(self):
++        from importlib.metadata import PackageNotFoundError
++
++        from lite.gym.envs.browsergym import webarena_verified
++
++        try:
++            webarena_verified.browsergym_package_root()
++            webarena_verified.task_records()
++        except PackageNotFoundError:
++            pytest.skip("WebArena-Verified packages not installed")
++        import lite.gym as gym
++
++        task_ids = gym.registry.task_ids(
++            "browsergym.webarena_verified", split="eval"
++        )
++        assert len(task_ids) == 812
++        assert task_ids[0] == "279.0.2"
++        assert task_ids[-1] == "999.811.2"
++
++        metadata = [
++            gym.registry.task_metadata("browsergym.webarena_verified", task_id)
++            for task_id in task_ids
++        ]
++        assert all(item is not None for item in metadata)
++        assert sum(item.others["hard"] for item in metadata if item is not None) == 258
++        assert (
++            sum(item.others["mutating"] for item in metadata if item is not None)
++            == 374
++        )
++        assert all(
++            "llm_as_a_judge" not in item.others
++            for item in metadata
++            if item is not None
++        )
++
++    @pytest.mark.asyncio
++    async def test_webarena_verified_uses_binary_official_task_score(self, monkeypatch):
++        config = BrowserGymConfig(
++            bgym_task_id="webarena_verified.279.0.2",
++            benchmark="webarena_verified",
++            use_screenshot=False,
++            action_subsets=("chat",),
++        )
++        env = BrowserGymEnv(config=config, max_steps=1, extra_tools=["response"])
++
++        async def execute(_code):
++            return {"reward": 0.5, "bg_terminated": True}
++
++        monkeypatch.setattr(env, "_execute_bgym_action", execute)
++        result = await env.step([make_tool_call("response", {"text": "{}"})])
++
++        assert result.terminated is True
++        assert result.reward == 0.0
+diff --git a/lite/gym/envs/browsergym/webarena_verified.py b/lite/gym/envs/browsergym/webarena_verified.py
+new file mode 100644
+index 0000000..aee2992
+--- /dev/null
++++ b/lite/gym/envs/browsergym/webarena_verified.py
+@@ -0,0 +1,201 @@
++"""Pinned WebArena-Verified task catalog.
++
++The official dataset owns task identity, subset membership, and mutation type.
++Pinning both distributions and both catalog payloads makes an upgrade an
++explicit benchmark change instead of silently changing the score denominator.
++"""
++
++from __future__ import annotations
++
++import hashlib
++import importlib.util
++import json
++import zipfile
++from functools import cache
++from importlib.metadata import version
++from pathlib import Path
++from types import MappingProxyType
++from typing import Any
++
++BROWSERGYM_PACKAGE_VERSION = "0.14.3"
++PACKAGE_VERSION = "1.2.3"
++DATASET_SHA256 = "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30"
++HARD_SUBSET_SHA256 = "3b0a4df231bb5a0c642215e521c3fa97701a384f52a734dc2db8f617ad0591a7"
++TASK_COUNT = 812
++HARD_TASK_COUNT = 258
++
++
++def _distribution_version(distribution: str, expected: str) -> None:
++    installed = version(distribution)
++    if installed != expected:
++        raise RuntimeError(
++            f"{distribution} version mismatch: expected {expected}, found {installed}. "
++            "Run lite/gym/envs/browsergym/scripts/install.sh webarena_verified."
++        )
++
++
++def browsergym_package_root() -> Path:
++    """Return the pinned BrowserGym integration package without importing it."""
++    _distribution_version("browsergym-webarena-verified", BROWSERGYM_PACKAGE_VERSION)
++    spec = importlib.util.find_spec("browsergym")
++    if spec is None or not spec.submodule_search_locations:
++        raise ModuleNotFoundError("browsergym")
++    package_dir = Path(next(iter(spec.submodule_search_locations))) / "webarena_verified"
++    if not (package_dir / "__init__.py").is_file():
++        raise ModuleNotFoundError("browsergym.webarena_verified")
++    return package_dir
++
++
++def _package_root() -> Path:
++    _distribution_version("webarena-verified", PACKAGE_VERSION)
++    spec = importlib.util.find_spec("webarena_verified")
++    if spec is None or not spec.submodule_search_locations:
++        raise ModuleNotFoundError("webarena_verified")
++    return Path(next(iter(spec.submodule_search_locations)))
++
++
++def _read_checked(path: Path, expected_sha256: str) -> Any:
++    payload = path.read_bytes()
++    actual = hashlib.sha256(payload).hexdigest()
++    if actual != expected_sha256:
++        raise RuntimeError(
++            f"WebArena-Verified catalog hash mismatch for {path.name}: "
++            f"expected {expected_sha256}, found {actual}"
++        )
++    return json.loads(payload)
++
++
++@cache
++def task_records() -> tuple[dict[str, Any], ...]:
++    """Return the validated official full-suite records in task-id order."""
++    path = _package_root() / "assets/dataset/webarena-verified.json"
++    records = _read_checked(path, DATASET_SHA256)
++    if not isinstance(records, list) or len(records) != TASK_COUNT:
++        found = len(records) if isinstance(records, list) else 0
++        raise RuntimeError(f"WebArena-Verified must contain {TASK_COUNT} tasks, found {found}")
++    task_ids = [record.get("task_id") for record in records]
++    if task_ids != list(range(TASK_COUNT)):
++        raise RuntimeError(
++            "WebArena-Verified task_id values must be the unique contiguous range 0..811"
++        )
++    required = {"intent_template_id", "revision", "sites", "intent", "eval"}
++    for record in records:
++        missing = required - record.keys()
++        if missing:
++            raise RuntimeError(
++                f"WebArena-Verified task {record['task_id']} missing fields: {sorted(missing)}"
++            )
++    return tuple(records)
++
++
++@cache
++def hard_task_ids() -> frozenset[int]:
++    """Return task IDs in the official 258-task Hard subset."""
++    path = _package_root() / "assets/dataset/subsets/webarena-verified-hard.json"
++    subset = _read_checked(path, HARD_SUBSET_SHA256)
++    task_ids = subset.get("task_ids") if isinstance(subset, dict) else None
++    if not isinstance(task_ids, list) or len(task_ids) != HARD_TASK_COUNT:
++        found = len(task_ids) if isinstance(task_ids, list) else 0
++        raise RuntimeError(
++            f"WebArena-Verified Hard must contain {HARD_TASK_COUNT} tasks, found {found}"
++        )
++    selected = frozenset(task_ids)
++    if len(selected) != HARD_TASK_COUNT or not selected <= set(range(TASK_COUNT)):
++        raise RuntimeError("WebArena-Verified Hard contains duplicate or unknown task IDs")
++    return selected
++
++
++@cache
++def task_ids() -> tuple[str, ...]:
++    """Return BrowserGym task IDs for the pinned full suite."""
++    return tuple(
++        f"webarena_verified.{record['intent_template_id']}.{record['task_id']}.{record['revision']}"
++        for record in task_records()
++    )
++
++
++@cache
++def _records_by_bgym_id() -> dict[str, dict[str, Any]]:
++    return dict(zip(task_ids(), task_records(), strict=True))
++
++
++def task_record(bgym_task_id: str) -> dict[str, Any] | None:
++    """Return one official task record by BrowserGym task ID."""
++    return _records_by_bgym_id().get(bgym_task_id)
++
++
++def is_hard(bgym_task_id: str) -> bool:
++    """Return whether a BrowserGym task belongs to the official Hard subset."""
++    record = task_record(bgym_task_id)
++    return record is not None and record["task_id"] in hard_task_ids()
++
++
++def is_mutating(bgym_task_id: str) -> bool:
++    """Return the exact mutation type declared by the response evaluator."""
++    record = task_record(bgym_task_id)
++    if record is None:
++        return False
++    response_evaluators = [
++        item for item in record["eval"] if item.get("evaluator") == "AgentResponseEvaluator"
++    ]
++    if len(response_evaluators) != 1:
++        raise RuntimeError(
++            f"WebArena-Verified task {record['task_id']} must have one AgentResponseEvaluator"
++        )
++    return response_evaluators[0]["expected"]["task_type"] == "mutate"
++
++
++def install_playwright_trace_loader() -> None:
++    """Make Playwright's external request/response bodies visible to scoring.
++
++    Playwright stores larger trace payloads under ``resources/<sha1>`` and leaves
++    an empty ``text`` field plus ``_sha1`` in ``trace.network``. The pinned
++    evaluator reads only ``trace.network``, so post-data assertions otherwise see
++    ``None`` even though the browser sent the expected body. Hydrate those fields
++    at the CUA-Lite integration boundary before the official evaluator parses
++    them.
++    """
++    from webarena_verified.types import tracing
++    from webarena_verified.types.tracing import NetworkEvent
++
++    def load_playwright_trace(trace_path: Path) -> tuple[NetworkEvent, ...]:
++        archive: zipfile.ZipFile | None = None
++        if trace_path.suffix == ".zip":
++            archive = zipfile.ZipFile(trace_path)
++            raw_data = archive.read("trace.network").decode("utf-8")
++            resource_root = None
++        else:
++            trace_file = trace_path / "trace.network" if trace_path.is_dir() else trace_path
++            if not trace_file.exists():
++                raise FileNotFoundError(f"Trace file {str(trace_file)!r} does not exist.")
++            raw_data = trace_file.read_text(errors="ignore")
++            resource_root = trace_file.parent / "resources"
++
++        try:
++            events = []
++            for line in raw_data.splitlines():
++                item = json.loads(line)
++                if item.get("type") != "resource-snapshot":
++                    continue
++                snapshot = item["snapshot"]
++                for content in (
++                    snapshot.get("request", {}).get("postData"),
++                    snapshot.get("response", {}).get("content"),
++                ):
++                    if not isinstance(content, dict) or content.get("text"):
++                        continue
++                    resource_name = content.get("_sha1")
++                    if not isinstance(resource_name, str):
++                        continue
++                    if archive is not None:
++                        payload = archive.read(f"resources/{resource_name}")
++                    else:
++                        payload = (resource_root / resource_name).read_bytes()
++                    content["text"] = payload.decode("utf-8", errors="replace")
++                events.append(NetworkEvent(data=MappingProxyType(snapshot)))
++            return tuple(events)
++        finally:
++            if archive is not None:
++                archive.close()
++
++    tracing.load_playwright_trace = load_playwright_trace
+diff --git a/tests/gym/envs/browsergym/test_webarena_verified_catalog.py b/tests/gym/envs/browsergym/test_webarena_verified_catalog.py
+new file mode 100644
+index 0000000..cf03c38
+--- /dev/null
++++ b/tests/gym/envs/browsergym/test_webarena_verified_catalog.py
+@@ -0,0 +1,139 @@
++"""WebArena-Verified pinned catalog tests (no BrowserGym import required)."""
++
++from __future__ import annotations
++
++import hashlib
++import json
++import zipfile
++from types import SimpleNamespace
++
++import pytest
++
++from lite.gym.envs.browsergym import webarena_verified
++
++
++def _clear_catalog_caches() -> None:
++    webarena_verified.task_records.cache_clear()
++    webarena_verified.hard_task_ids.cache_clear()
++    webarena_verified.task_ids.cache_clear()
++    webarena_verified._records_by_bgym_id.cache_clear()
++
++
++@pytest.fixture
++def synthetic_catalog(tmp_path, monkeypatch):
++    root = tmp_path / "webarena_verified"
++    dataset_dir = root / "assets" / "dataset"
++    subset_dir = dataset_dir / "subsets"
++    subset_dir.mkdir(parents=True)
++
++    records = [
++        {
++            "task_id": task_id,
++            "intent_template_id": 100 + task_id // 4,
++            "revision": 2,
++            "sites": ["shopping"],
++            "intent": f"Task {task_id}",
++            "eval": [
++                {
++                    "evaluator": "AgentResponseEvaluator",
++                    "expected": {
++                        "task_type": "mutate" if task_id < 374 else "retrieve",
++                        "status": "SUCCESS",
++                    },
++                }
++            ],
++        }
++        for task_id in range(webarena_verified.TASK_COUNT)
++    ]
++    dataset = json.dumps(records).encode()
++    hard = json.dumps({"task_ids": list(range(webarena_verified.HARD_TASK_COUNT))}).encode()
++    (dataset_dir / "webarena-verified.json").write_bytes(dataset)
++    (subset_dir / "webarena-verified-hard.json").write_bytes(hard)
++
++    monkeypatch.setattr(webarena_verified, "_package_root", lambda: root)
++    monkeypatch.setattr(webarena_verified, "DATASET_SHA256", hashlib.sha256(dataset).hexdigest())
++    monkeypatch.setattr(webarena_verified, "HARD_SUBSET_SHA256", hashlib.sha256(hard).hexdigest())
++    _clear_catalog_caches()
++    yield root
++    _clear_catalog_caches()
++
++
++def test_catalog_identity_subsets_and_mutation_type(synthetic_catalog):
++    task_ids = webarena_verified.task_ids()
++
++    assert len(task_ids) == 812
++    assert task_ids[0] == "webarena_verified.100.0.2"
++    assert task_ids[-1] == "webarena_verified.302.811.2"
++    assert sum(map(webarena_verified.is_hard, task_ids)) == 258
++    assert sum(map(webarena_verified.is_mutating, task_ids)) == 374
++    assert webarena_verified.task_record("webarena_verified.unknown") is None
++
++
++def test_catalog_hash_mismatch_fails_loudly(synthetic_catalog, monkeypatch):
++    monkeypatch.setattr(webarena_verified, "DATASET_SHA256", "0" * 64)
++    _clear_catalog_caches()
++
++    with pytest.raises(RuntimeError, match="catalog hash mismatch"):
++        webarena_verified.task_records()
++
++
++def test_dataset_distribution_version_is_pinned(monkeypatch):
++    monkeypatch.setattr(webarena_verified, "version", lambda name: "1.2.2")
++
++    with pytest.raises(RuntimeError, match="expected 1.2.3, found 1.2.2"):
++        webarena_verified._package_root()
++
++
++def test_browsergym_integration_distribution_is_pinned(tmp_path, monkeypatch):
++    package_dir = tmp_path / "browsergym" / "webarena_verified"
++    package_dir.mkdir(parents=True)
++    (package_dir / "__init__.py").write_text("")
++    monkeypatch.setattr(
++        webarena_verified,
++        "version",
++        lambda name: {
++            "browsergym-webarena-verified": "0.14.3",
++        }[name],
++    )
++    monkeypatch.setattr(
++        webarena_verified.importlib.util,
++        "find_spec",
++        lambda name: SimpleNamespace(submodule_search_locations=[str(tmp_path / "browsergym")]),
++    )
++
++    assert webarena_verified.browsergym_package_root() == package_dir
++
++
++def test_trace_loader_hydrates_external_request_body(tmp_path):
++    pytest.importorskip("webarena_verified")
++    trace_path = tmp_path / "trace.zip"
++    body = '{"availability":"busy","clear_status_after":null}'
++    event = {
++        "type": "resource-snapshot",
++        "snapshot": {
++            "request": {
++                "method": "PUT",
++                "url": "http://gitlab/api/v4/user/status",
++                "headers": [],
++                "postData": {
++                    "mimeType": "application/json",
++                    "text": "",
++                    "_sha1": "request.json",
++                },
++            },
++            "response": {"status": 200, "headers": [], "redirectURL": ""},
++        },
++    }
++    with zipfile.ZipFile(trace_path, "w") as archive:
++        archive.writestr("trace.network", json.dumps(event))
++        archive.writestr("resources/request.json", body)
++
++    webarena_verified.install_playwright_trace_loader()
++    from webarena_verified.types.tracing import NetworkTrace
++
++    trace = NetworkTrace.from_playwright_trace(trace_path)
++
++    assert trace.events[0].post_data == {
++        "availability": "busy",
++        "clear_status_after": None,
++    }

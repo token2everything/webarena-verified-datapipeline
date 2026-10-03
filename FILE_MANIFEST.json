@@ -1,0 +1,211 @@
+{
+  "version": "v0.2.0-pilot",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 237,
+      "sha256": "55b1d06faf97a613e56d5ea8d745e708e95cc4ec0206d56749b37cb545cb947d"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1530,
+      "sha256": "7e03b21646ad5ed33c0d8f7c40dc26bb6d03063d0015ccd964fcc4635106e4c7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5748,
+      "sha256": "408965b4f8f1a26cc037bd6cad8246f87f8eeb567f29976fe60d6f3cce997a9b"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/AGENTS.md",
+      "bytes": 2079,
+      "sha256": "f78e11200606358637b1208fba8cf32b876a4d3798a17a03e04a1c7c9342fdf4"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/author.py",
+      "bytes": 14379,
+      "sha256": "0184f9299d3ecbaa63a6d5575799df37da2e0754994383b65ed3e726c10e7aa8"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/collect_reference.py",
+      "bytes": 4005,
+      "sha256": "d0de8f8cd352c1b8ce75049b2a11bacc4f32cad542233e6b269cdc349330cba6"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/contract.py",
+      "bytes": 13238,
+      "sha256": "848874625207c470bd4b7b525eb0b2b75ffb2f156f285a84b844ba3dd30a637e"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/generated_env.py",
+      "bytes": 29225,
+      "sha256": "4b273dc336ea6ecba0bc53e9b39e353bff27cf5b27f0632d12b793f90e6a89bf"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/patches/agent_response_null.patch",
+      "bytes": 2527,
+      "sha256": "0dfbb5fc2beb5f8cb39d9b1680ad6fd9ecd2618f6ef4934568ec02b7cdaa4b4b"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/prepare_evaluator.py",
+      "bytes": 4552,
+      "sha256": "3eca2d4792333ccb46b7f372f9528a8eabed0592262c84a1f96ea05ccd8de045"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/quality_check.py",
+      "bytes": 19247,
+      "sha256": "a9a7d823ab414838d58cb722a961fdc0f215ba60253f684e77a4ecf4351be4a4"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/replay.py",
+      "bytes": 16133,
+      "sha256": "7f7ef545adfa21f8123e362fe0dd305a5848e071279bfdb537b4f1f0de692622"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/run_reference.py",
+      "bytes": 12112,
+      "sha256": "202a28f13705a5ccf5d503d6484754300a9eb68330429959d61051dffe734f57"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_evaluator_build.py",
+      "bytes": 5310,
+      "sha256": "40a05db3bfbdbcf158d940de9384630ce87271acf29e61a46ea6c04481286b04"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_generated_contract.py",
+      "bytes": 4138,
+      "sha256": "216c74ef057ba446b327a716a7b528f29f5dfa760868d77f53cff4b83a4f188b"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_quality_check.py",
+      "bytes": 13166,
+      "sha256": "fd35d6c12dfd951a1e3d2e748e5ceee4aae266d8f4347f8582ebb8ec2cc399c9"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_reference.py",
+      "bytes": 32763,
+      "sha256": "cf322a3f07f92fa7e81397bb5e4991570d5b4a76426bea5c0c26c5cb78470767"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_replay.py",
+      "bytes": 18769,
+      "sha256": "9ab71ee8be3b22a7e0b4af7d7dc6403fd73933a5584825779a5ded990f095b84"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/tests/test_semantic_author.py",
+      "bytes": 7384,
+      "sha256": "53082dee3645c8739b30638fa389abf9a34bd674d234f5e005496bb3ac13c879"
+    },
+    {
+      "path": "devs/data/webarena_verified_generated/validate.py",
+      "bytes": 2873,
+      "sha256": "2e60882dacd80810649acd52834fc195855153d35376d5d875e7b3f4899f3b63"
+    },
+    {
+      "path": "docs/pipeline.md",
+      "bytes": 3654,
+      "sha256": "8181be0f86c67251589d73d94a737a0750d2f6bb02d62383fab4bb720df2ed70"
+    },
+    {
+      "path": "docs/reproduce-runtime.md",
+      "bytes": 3018,
+      "sha256": "223dd2bb300aedb50dc41563ac6cbb6e0f9e5949aef87efc0fde65829a5388fa"
+    },
+    {
+      "path": "environment/host-package-versions.json",
+      "bytes": 2780,
+      "sha256": "87a11cefc68f8d1c390587454d621b4c614866c40e16f4317a59f6c68475af4e"
+    },
+    {
+      "path": "environment/reference-runtime-index.json",
+      "bytes": 7738,
+      "sha256": "4f5c6468ffb9cb46ee0729d0c4225591386e60fc782033d555403bfeacfbbbda"
+    },
+    {
+      "path": "environment/requirements-reference.txt",
+      "bytes": 253,
+      "sha256": "07e3e4ee111664800918d061f1601ac3f6289558dddc753c2b87c264117fee24"
+    },
+    {
+      "path": "examples/model.example.json",
+      "bytes": 172,
+      "sha256": "76f2d3361efcffbc5f111ce82704037c5aa35516d6dc39ce57d14313739a7122"
+    },
+    {
+      "path": "examples/site-urls.example.json",
+      "bytes": 40,
+      "sha256": "dd8fe4ebc0ad9eae4f4d4be3f20bf45c104bcedf2b083bf550655cab8a46868e"
+    },
+    {
+      "path": "integrations/cua-lite-v02.patch",
+      "bytes": 73011,
+      "sha256": "276dc38bce28cf0488e46b395d693b526c6d108de7d2c69a68f7bfd62beb7265"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 1133,
+      "sha256": "a0442d6d45e50a784143b66f7d49a8b39af00bd25a54b80404db9010fc896811"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/code_verification.json",
+      "bytes": 2850,
+      "sha256": "7011c0c3cb445d772f86d3ce404ea8ece7b3754a2cb05cff633125c4262b4f8d"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/construction_progress.json",
+      "bytes": 118240,
+      "sha256": "0dc2ba06f9ba8c5a1bf0e41e616964d4f1348710691845818a0a66eeffbd9ff7"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/data-index.json",
+      "bytes": 1016,
+      "sha256": "615427f333091337b2431a7484763ea78f4a18d99407314d4baafa7a9c558f45"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/reference_failure_audit.json",
+      "bytes": 6577,
+      "sha256": "d630dc45c548de94641d92f493dd89196e4df73c052d92da25fa317dc3d42ae4"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/reference_score_matrix.csv",
+      "bytes": 19385,
+      "sha256": "3b859aa318c7e8b2e5ea9b3fdebf18b33627642cd65928be522bed67b41e5f9a"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/snapshot-verification.json",
+      "bytes": 2415,
+      "sha256": "f736155a3651bfeddfc2b6700b9af96ea389b2ae270f278ff10ab2f918075116"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/source-manifest.json",
+      "bytes": 9043,
+      "sha256": "a54fee0bc72e41eb6ee0c89a008d10dfb1c722255277bdc7029701cdb1faacc9"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/verification-logs/default-tests.log",
+      "bytes": 1994,
+      "sha256": "2d7e40f32486187df1c6aee068b08074f9d86870ec0192b74f4ed3d25b5b7ea0"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/verification-logs/isolated-tests.log",
+      "bytes": 1994,
+      "sha256": "ef739dbe7887f5bf721c94d9c2019d667590c43584841b038b7fc6430c9c996f"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/verification-logs/runtime-tests.log",
+      "bytes": 10031,
+      "sha256": "a8ffc3e46896e27a8cca73ff7327910ee4c96bc3e7ec97fe48cc61eb2353097b"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/verification-logs/wav-v02-repository-lock-primary.log",
+      "bytes": 242,
+      "sha256": "fc27c81b4d75390a4bbedd0073b24f80dca0fb05655aede13c28ab9d100a6fe3"
+    },
+    {
+      "path": "releases/v0.2.0-pilot/verification-logs/wav-v02-repository-lock.log",
+      "bytes": 40209,
+      "sha256": "4cde3261f85c0a6bdef84e7abdc391bc48f2a9725c392a376a09ed7fe773b61d"
+    }
+  ],
+  "scope": "All distributable repository files except FILE_MANIFEST.json itself and Git internals"
+}
